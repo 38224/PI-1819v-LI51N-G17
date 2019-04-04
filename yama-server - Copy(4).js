@@ -33,7 +33,9 @@ function getArtistsByName(req, resp) {
   // 		body = JSON.parse(body)
   // 		console.log(body)
   //     })
-  getInfo("artist.search", `artist=${req.params.name}`);
+  getInfo("artist.search", `artist=${req.params.name}`, body =>
+    console.log(body)
+  );
 }
 function getAlbumsByMbid(req, resp) {
   // //http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&mbid=5ae3ee8e-2bfd-4ffe-8551-e571f25f24a2&api_key=f72aedc9562cd94f698840409f292395&format=json
@@ -43,7 +45,9 @@ function getAlbumsByMbid(req, resp) {
   // 		body = JSON.parse(body)
   // 		console.log(body.topalbums.album[0])
   //     })
-  getInfo("artist.gettopalmbuns", `mbid = ${req.params.mbid}`);
+  getInfo("artist.gettopalmbuns", `mbid = ${req.params.mbid}`, body =>
+    console.log(body)
+  );
 }
 
 function getTracksByMbid(req, resp) {
@@ -51,17 +55,17 @@ function getTracksByMbid(req, resp) {
   let mbid = req.params.mbid;
   getInfo(
     "artist.search",
-    `artist=${req.params.name}&album=${req.params.album /*?????*/}`
+    `artist=${req.params.name}&album=${req.params.album /*?????*/}`,
+    body => console.log(body)
   );
 }
 
-function getInfo(method, searchParams) {
+function getInfo(method, searchParams, bodyFunc) {
   const uri = `${es.yama_api}?method=${method}&${searchParams}&api_key=${
     es.Api_token
   }&format=json`;
   request.get(uri, (err, res, body) => {
-    body = JSON.parse(body);
-    console.log(body);
+    bodyFunc(body);
     /*Em vez de Console.Log o metodo getInfo pode receber uma função que sabe tratar do body */
   });
 }
