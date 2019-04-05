@@ -11,11 +11,11 @@ let API_KEY = "f72aedc9562cd94f698840409f292395";
 app.get("/api/artists/:name", getArtistsByName); // web-api
 app.get("/api/albums/:mbid", getAlbumsByMbid); // web-api
 app.get("/api/albums/:mbid/tracks", getTracksByMbid); // web-api
-app.put("/yama/playlist/:name/:description", editPlaylist); // web-api
-app.get("/yama/playlists", getPlaylists); // web-api
-
-//localhost:3000/api/artist/tony+carreira
-
+//app.put("/yama/playlist/:name/:description", editPlaylist); // web-api
+//app.get("/yama/playlists", getPlaylists); // web-api
+//localhost:3000/api/artists/tony+carreira
+///api/albums/5ae3ee8e-2bfd-4ffe-8551-e571f25f24a2
+///api/albums/dddf01df-f9f1-4ba6-b414-5ddf1984fc7f/tracks
 // YAMA WEB API START//
 
 const es = {
@@ -27,46 +27,36 @@ const es = {
 };
 
 function getArtistsByName(req, resp) {
-  // let name = req.params.name
-  // const uri = `${es.yama_api}?method=artist.search&artist=${name}&api_key=${es.Api_token}&format=json`  // necessita criar variável com url do site em vez de hardcoded
-  //     request.get(uri, (err, res, body) =>{
-  // 		body = JSON.parse(body)
-  // 		console.log(body)
-  //     })
+  // const uri = `${es.yama_api}?method=artist.search&artist=${name}&api_key=${es.Api_token}&format=json`
   getInfo("artist.search", `artist=${req.params.name}`, body =>
     console.log(body)
   );
 }
 function getAlbumsByMbid(req, resp) {
-  // //http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&mbid=5ae3ee8e-2bfd-4ffe-8551-e571f25f24a2&api_key=f72aedc9562cd94f698840409f292395&format=json
-  // let mbid = req.params.mbid
-  // const uri = `${es.yama_api}?method=artist.gettopalbums&mbid=${mbid}&api_key=${es.Api_token}&format=json`
-  //     request.get(uri, (err, res, body) =>{
-  // 		body = JSON.parse(body)
-  // 		console.log(body.topalbums.album[0])
-  //     })
-  getInfo("artist.gettopalmbuns", `mbid = ${req.params.mbid}`, body =>
-    console.log(body)
+  //http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&mbid=5ae3ee8e-2bfd-4ffe-8551-e571f25f24a2&api_key=f72aedc9562cd94f698840409f292395&format=json
+  getInfo("artist.getTopAlbums", `mbid=${req.params.mbid}`, body =>
+    body.topalbums.album.forEach(element => {
+      console.log(element.name);
+    })
   );
 }
 
 function getTracksByMbid(req, resp) {
-  //http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=YOUR_API_KEY&artist=Cher&album=Believe&format=json
-  let mbid = req.params.mbid;
-  getInfo(
-    "artist.search",
-    `artist=${req.params.name}&album=${req.params.album /*?????*/}`,
-    body => console.log(body)
-  );
+  //http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=YOUR_API_KEY&artist=Cher&album=Believe&format=json===>?
+  getInfo("album.getinfo", `mbid=${req.params.mbid}`, body => {
+    console.log(`Album : ${body.album.name}\n`);
+    body.album.tracks.track.forEach(element => console.log(`${element.name}`));
+  });
 }
 
 function getInfo(method, searchParams, bodyFunc) {
   const uri = `${es.yama_api}?method=${method}&${searchParams}&api_key=${
     es.Api_token
   }&format=json`;
+  //console.log(uri);
   request.get(uri, (err, res, body) => {
+    body = JSON.parse(body);
     bodyFunc(body);
-    /*Em vez de Console.Log o metodo getInfo pode receber uma função que sabe tratar do body */
   });
 }
 // YAMA WEB API END//
