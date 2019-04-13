@@ -11,6 +11,7 @@ function Router() {
         'DELETE': [],
         'USE': null
     }
+	this.errorFunc = (_, res) => { res.end() }
 	
 	this.get = function(path,func) {
 		addRoute(this.routes.GET, path, func)
@@ -28,26 +29,63 @@ function Router() {
         this.routes.USE = func
     }
 	// get /api/artists/:name
-	this.router = function(req,res) {
-		let {pathname, query} = parse(req.url, true)
-		console.log(pathname)
-		console.log(query)
-		let route = this.routes[req.method]
-		let found = route.some( r => {
-			let slashSplit = r.path.split('/')
-			
-			
-		}
-	} 
+	
+	this.find = function(req, res) {
+        const method = req.method 
+        const { pathname, query } = parse(req.url, true) 
+        const route = this.routes[method].find(rt => validatePath(rt.path, pathname, rt.containsParams))
+        req.pathname = pathname
+        req.query = query
+        if (route) {
+            addParams(req, route.path, pathname, route.containsParams)
+            return route.func(req, res, err => {
+                if (err) this.errorFunc(req, res, err)
+            })
+        }
+        this.errorFunc(req, res, {code: 404, message: 'Resource not found.'})
+    }
+} 
+ 
+function addRoute(route, pathname, func) {
+    const parts = pathname.split('/')
+    const containsParams = parts.some(str => str.startsWith(":"))
+    const r = {
+        'path': pathname, //api/artists/:name
+        'containsParams': containsParams, //true
+        'func': func  // getArtirtsByName
+    }
+    route.push(r) 
 }
 
-function addRoute(route, path, func){
-	    let r = { 
-        'path': path, //          /api/artists/:name
-        'regexPathElems': [],
-        'query': null,
-        'func': func
-    }
+function addParams(req,pathname,path,containsParams){
+	if(containsParams){
+		const pathnameParts = pathname.split('/')
+		const pathParts = path.split('/')
+		const pathParams = {}
+		pathnameParts.forEach((elem,idx) =>{
+			if(elem.startsWith(":"))
+				pathParams[elem.substring(1)] = pathParts[idx]
+		})
+		req.params = pathParams 
+	}
+}
+
+function validatePath(pathname,path,containsParams){ 
+	if(containsParams){
+		const pathnameParts = pathname.split('/')
+		const pathParts = path.split('/')
+		console.log("oo"+pathnameParts)
+		console.log("pp"+pathParts)
+		let sameLength = pathnameParts.length == pathParts.length
+		let isOk = true
+		pathnameParts.forEach((elem,idx) =>{
+			if(!(elem.startsWith(":") || elem == pathParts[idx])){
+				isOk = false
+			}
+		})
+		return sameLength && isOk
+	}
+	return pathname == path
 }
 
 module.exports = Router
