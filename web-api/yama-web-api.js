@@ -2,9 +2,7 @@
 
 
 module.exports = (app,yamaServices) => {
-	
-	const request = require('request')
-	
+
 	app.get('/api/artists/:name', getArtistsByName)
 	/*
 	app.get('/api/albums/:mbid', getAlbumsByMbid)
@@ -18,14 +16,13 @@ module.exports = (app,yamaServices) => {
 	app.use(resourceNotFound)
 	return app
  
-	function getArtistsByName(req, resp){
+	function getArtistsByName(req, resp){ 
 		let name = req.params.name 
-		const uri = `${es.yama_api}?method=artist.search&artist=${name}&api_key=${es.Api_token}&format=json`  // necessita criar variável com url do site em vez de hardcoded
-			request.get(uri, (err, res, body) =>{
-				res.statusCode = statusCode
-				res.end(JSON.stringify(data))
-			})
+		yamaServices.getArtistsByName(name,(err,data) => {
+			handleResponse(resp,200,err,data)
+		}) 
 	}
+	 
 	/*
 	function getAlbumsByMbid(req, resp){
 		//http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&mbid=5ae3ee8e-2bfd-4ffe-8551-e571f25f24a2&api_key=f72aedc9562cd94f698840409f292395&format=json
@@ -62,7 +59,17 @@ module.exports = (app,yamaServices) => {
         res.end('Resource Not Found')
         return true
     }
-	
+}
+function handleResponse(res, statusCode, err, data) {
+    if(err){
+        res.statusCode = err.code
+        err.message ?
+            res.end(err.message)
+            : res.end()
+    } else {
+        res.statusCode = statusCode 
+        res.end(JSON.stringify(data))
+    }
 }
 
 

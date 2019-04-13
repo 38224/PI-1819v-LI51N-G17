@@ -73,9 +73,7 @@ function addParams(req,pathname,path,containsParams){
 function validatePath(pathname,path,containsParams){ 
 	if(containsParams){
 		const pathnameParts = pathname.split('/')
-		const pathParts = path.split('/')
-		console.log("oo"+pathnameParts)
-		console.log("pp"+pathParts)
+		const pathParts = path.split('/') 
 		let sameLength = pathnameParts.length == pathParts.length
 		let isOk = true
 		pathnameParts.forEach((elem,idx) =>{

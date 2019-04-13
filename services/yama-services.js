@@ -1,6 +1,6 @@
 'use strict'
  
-class Yama {
+class Services {
 	
 	constructor(lastfmData,yamaDb) {
 		this.lastfmData = lastfmData
@@ -8,12 +8,13 @@ class Yama {
 	}
 	
 	static init(lastfmData,yamaDb) {
-		return new Yama(lastfmData,yamaDb)
+		return new Services(lastfmData,yamaDb)
 	}
-	getArtistsByName(cb) {
-        this.lastfmData.getArtistsByName(cb)
+	getArtistsByName(name,cb) { 
+        this.lastfmData.getArtistsByName(name,cb)
     }
-	 
-
+ 
 }
+
+module.exports = Services
 
