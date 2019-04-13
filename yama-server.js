@@ -1,9 +1,11 @@
 'use strict'
 
 const http = require('http')
-const express = require('express')
+//const express = require('express')
 const request = require('request') //a tirar para por no yamaData
-const app = express()
+//const app = express()
+const app = require('/router') // comparar tamanho dos arrays, se os paths forem iguais, next, quando chegar ao :id substitui e vou ao params
+// acrescentar o id
 let API_KEY = 'f72aedc9562cd94f698840409f292395'
 //http://ws.audioscrobbler.com/2.0/?method=artist.search&artist=freddy+mercury&api_key=f72aedc9562cd94f698840409f292395&format=json
 //localhost:3000/api/artist/tony+carreira
