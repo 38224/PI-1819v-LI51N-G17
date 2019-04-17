@@ -16,11 +16,11 @@ class Services {
 	getAlbumsByMbid(mbid,cb) { 
         this.lastfmData.getAlbumsByMbid(mbid,cb)
     }
-	getTracksByMbid(mbid,cb) { 
+	getTracksByMbid(mbid,cb) {  
         this.lastfmData.getTracksByMbid(mbid,cb)
     }
-	createPlaylist(name,description,cb) { 
-        this.yamaDb.createPlaylist(name,description,cb)
+	createPlaylist(body,cb) {
+        this.yamaDb.createPlaylist(body,cb)
     }
  
 }

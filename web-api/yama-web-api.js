@@ -1,5 +1,6 @@
 'use strict'
 
+const bodyParser = require('../utils/body-parser')
 
 module.exports = (app,yamaServices) => {
 
@@ -35,14 +36,14 @@ module.exports = (app,yamaServices) => {
 		let mbid = req.params.mbid
 		yamaServices.getTracksByMbid(mbid,(err,data) => {
 			handleResponse(resp,200,err,data)
-		}) 
+		})
 	}
-	function createPlaylist(req, resp){
-		let name = req.query.name
-		let desc = req.query.description
-		yamaServices.createPlaylist(name,desc,(err,data) => {
+	function createPlaylist(req, resp){ 
+		bodyParser(req,(body) =>{
+		yamaServices.createPlaylist(body,(err,data) => {
 			handleResponse(resp,201,err,data)
 		}) 
+		})
 	}
 	 /*
 	function reportError(statusOk, err, res, body, cb) {
