@@ -9,7 +9,9 @@ class YamaDb {
 	static init(es) {
 		return new YamaDb(es)
 	}
-	
+	createPlaylist(name,description,cb) { 
+        
+    }
 }
  
 module.exports = YamaDb

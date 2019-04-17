@@ -6,11 +6,12 @@ module.exports = (app,yamaServices) => {
 	app.get('/api/artists/:name', getArtistsByName)
 	app.get('/api/albums/:mbid', getAlbumsByMbid)
 	app.get('/api/albums/:mbid/tracks', getTracksByMbid)
+	app.post("/yama/playlist", createPlaylist) //passar para body em vez de query
 	/*
 	app.get("/yama/playlists", getPlaylists)
 	app.get("/yama/playlists/:id",getPlaylistInfo)
 	app.put("/yama/playlists/:id/:musicId",addMusicToPlaylist)
-	app.put("/yama/playlist/:name/:description", editPlaylist)
+	app.put("/yama/playlist/:playlistId", editPlaylist)
 	app.delete("/yama/playlists/:id/:musicId",deleteMusicFromPlaylist)
 	*/
 	app.use(resourceNotFound)
@@ -34,6 +35,13 @@ module.exports = (app,yamaServices) => {
 		let mbid = req.params.mbid
 		yamaServices.getTracksByMbid(mbid,(err,data) => {
 			handleResponse(resp,200,err,data)
+		}) 
+	}
+	function createPlaylist(req, resp){
+		let name = req.query.name
+		let desc = req.query.description
+		yamaServices.createPlaylist(name,desc,(err,data) => {
+			handleResponse(resp,201,err,data)
 		}) 
 	}
 	 /*
