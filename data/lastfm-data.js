@@ -26,6 +26,36 @@ class LastFm {
 			},
 			(body) => body.results.artistmatches.artist.map(a => parseArtists(a)))
 	}
+	
+	getAlbumsByMbid(mbid,cb) { 
+		get(cb,
+			{
+				uri: `${this.yama_api}?method=artist.gettopalbums&mbid=${mbid}&api_key=${this.API_KEY}&format=json`,
+				json: true
+			},
+			(body) => {
+				if(body.errorCode == 400)
+					return {'code': 400, 'message': 'invalid album' }
+				if(body.error == 404)
+					return {'code': 404, 'message': 'album does not exist' }
+			},
+			(body) => body.topalbums.album.map(a => parseAlbums(a)))
+	}
+	
+	getTracksByMbid(mbid,cb) { 
+		get(cb,
+			{
+				uri: `${this.yama_api}?method=album.getinfo&api_key=${this.API_KEY}&mbid=${mbid}&format=json`,
+				json: true
+			},
+			(body) => {
+				if(body.errorCode == 400)
+					return {'code': 400, 'message': 'invalid tracks' }
+				if(body.error == 404)
+					return {'code': 404, 'message': 'tracks do not exist' }
+			},
+			(body) => body.album)//.map(a => parseTracks(a)))
+	}
 }
 function parseArtists(artist) {
     let res = {
@@ -37,6 +67,31 @@ function parseArtists(artist) {
     }
     return res
 }
+function parseAlbums(album) {
+    let res = {
+        'name': album.name,
+        "playcount": album.playcount,
+        "url": album.url,
+        "artist": album.artist
+		//nao interessa as imagens?
+    }
+    return res
+}
+/*
+function parseTracks(tracks) {
+    let res = {
+        'name': tracks.name,
+        "artist": tracks.artist,
+        "mbid": tracks.mbid,
+        "url": tracks.url,
+		"listeners": tracks.listeners,
+		"playcount": tracks.playcount,
+		"tracks": tracks.tracks,
+		"wiki": tracks.wiki
+		//nao interessa as imagens nem tags?
+    }
+    return res
+}*/
 
 function get(cb, options, checkResponse, getBody) {
     request.get(

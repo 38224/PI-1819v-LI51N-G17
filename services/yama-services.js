@@ -13,6 +13,12 @@ class Services {
 	getArtistsByName(name,cb) { 
         this.lastfmData.getArtistsByName(name,cb)
     }
+	getAlbumsByMbid(mbid,cb) { 
+        this.lastfmData.getAlbumsByMbid(mbid,cb)
+    }
+	getTracksByMbid(mbid,cb) { 
+        this.lastfmData.getTracksByMbid(mbid,cb)
+    }
  
 }
 

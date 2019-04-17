@@ -4,9 +4,9 @@
 module.exports = (app,yamaServices) => {
 
 	app.get('/api/artists/:name', getArtistsByName)
-	/*
 	app.get('/api/albums/:mbid', getAlbumsByMbid)
 	app.get('/api/albums/:mbid/tracks', getTracksByMbid)
+	/*
 	app.get("/yama/playlists", getPlaylists)
 	app.get("/yama/playlists/:id",getPlaylistInfo)
 	app.put("/yama/playlists/:id/:musicId",addMusicToPlaylist)
@@ -23,22 +23,20 @@ module.exports = (app,yamaServices) => {
 		}) 
 	}
 	 
-	/*
 	function getAlbumsByMbid(req, resp){
-		//http://ws.audioscrobbler.com/2.0/?method=artist.gettopalbums&mbid=5ae3ee8e-2bfd-4ffe-8551-e571f25f24a2&api_key=f72aedc9562cd94f698840409f292395&format=json
 		let mbid = req.params.mbid
-		const uri = `${es.yama_api}?method=artist.gettopalbums&mbid=${mbid}&api_key=${es.Api_token}&format=json`  
-			request.get(uri, (err, res, body) =>{
-				body = JSON.parse(body)
-				console.log(body.topalbums.album[0])
-			})
+		yamaServices.getAlbumsByMbid(mbid,(err,data) => {
+			handleResponse(resp,200,err,data)
+		}) 
 	}
-
+	
 	function getTracksByMbid(req, resp){
-		//http://ws.audioscrobbler.com/2.0/?method=album.getinfo&api_key=YOUR_API_KEY&artist=Cher&album=Believe&format=json
 		let mbid = req.params.mbid
+		yamaServices.getTracksByMbid(mbid,(err,data) => {
+			handleResponse(resp,200,err,data)
+		}) 
 	}
-	  
+	 /*
 	function reportError(statusOk, err, res, body, cb) {
 		if(err) {
 			cb(err)
