@@ -7,14 +7,14 @@ module.exports = (app,yamaServices) => {
 	app.get('/api/artists/:name', getArtistsByName)
 	app.get('/api/albums/:mbid', getAlbumsByMbid)
 	app.get('/api/albums/:mbid/tracks', getTracksByMbid)
-	app.post("/yama/playlist", createPlaylist) //passar para body em vez de query
-	/*
+	// to be implemented \/ //
 	app.get("/yama/playlists", getPlaylists)
+	app.post("/yama/playlist", createPlaylist) 
 	app.get("/yama/playlists/:id",getPlaylistInfo)
 	app.put("/yama/playlists/:id/:musicId",addMusicToPlaylist)
 	app.put("/yama/playlist/:playlistId", editPlaylist)
 	app.delete("/yama/playlists/:id/:musicId",deleteMusicFromPlaylist)
-	*/
+	// to be implemented end //
 	app.use(resourceNotFound)
 	return app
  
@@ -40,27 +40,18 @@ module.exports = (app,yamaServices) => {
 	}
 	function createPlaylist(req, resp){ 
 		bodyParser(req,(body) =>{
-		yamaServices.createPlaylist(body,(err,data) => {
-			handleResponse(resp,201,err,data)
-		}) 
+			yamaServices.createPlaylist(body,(err,data) => {
+				handleResponse(resp,201,err,data)
+			}) 
 		})
 	}
-	 /*
-	function reportError(statusOk, err, res, body, cb) {
-		if(err) {
-			cb(err)
-			return true
-		}
-		if(res.statusCode != statusOk) {
-			cb({
-				code: res.statusCode,
-				message: res.statusMessage,
-				error: body
-			})
-			return true
-		}
+	function getPlaylists(req, resp){ 
+		yamaServices.getPlaylists((err,data) => {
+			handleResponse(resp,200,err,data)
+		})
 	}
-	*/
+	
+ 
     function resourceNotFound(req, res) {
         res.statusCode = 404
         res.end('Resource Not Found')

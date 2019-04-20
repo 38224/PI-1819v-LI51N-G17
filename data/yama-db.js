@@ -21,14 +21,25 @@ class YamaDb {
 				body: playlist
 			}, 
             (err, res, body) => {
-                handleResponse(err, res, 201, { 'status': 'created', '_id': body._id }, cb)
-        })
+				handleResponse(err, res, 201, { 'status': 'created', '_id': body._id }, cb)
+			}
+		)
     }
-	createPlaylist(playlist,cb) {
+	getPlaylists(cb) {
+		request.get(
+			{
+				uri:`${this.uri}/playlist/_search`,
+				headers: { 'content-type' : 'application/json' },
+				json: true
+			},
+			(err, res, body) => {
+               //TODO handleResponse(err, res, 201, { '_id': body._id }, cb)
+        	}
+		)
 		//http://localhost:9200/yama/playlist/_search
     }
-	
 }
+
 function handleResponse(err, res, expectedStatusCode, body, cb, message){
     if(err)
         return cb(err, null) 

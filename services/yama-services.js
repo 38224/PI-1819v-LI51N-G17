@@ -21,8 +21,10 @@ class Services {
     }
 	createPlaylist(body,cb) {
         this.yamaDb.createPlaylist(body,cb)
-    }
- 
+	}
+	getPlaylists(cb) {
+        this.yamaDb.getPlaylists(cb)
+	}
 }
 
 module.exports = Services
