@@ -11,8 +11,8 @@ class YamaDb {
 	static init(es) {
 		return new YamaDb(es)
 	}
-	createPlaylist(playlist,cb) { 
-	 
+	createPlaylist(playlist,cb) {  // cria grupo com {_id:xxx,name:nome,description:desc,musics:[]}
+		playlist.musics = []
 		request.post(
 			{
 				uri:`${this.uri}/playlist`,
@@ -20,7 +20,7 @@ class YamaDb {
 				json: true,
 				body: playlist
 			}, 
-            (err, res, body) => {
+            (err, res, body) => { 
 				handleResponse(err, res, 201, { 'status': 'created', '_id': body._id }, cb)
 			}
 		)
@@ -33,13 +33,22 @@ class YamaDb {
 				json: true
 			},
 			(err, res, body) => {
-               //TODO handleResponse(err, res, 201, { '_id': body._id }, cb)
+				console.log(body.hits.hits[0]._source)
+        		handleResponse(err, res, 200, body.hits.hits.map( p => parsePlaylists(p)), cb)
         	}
 		)
 		//http://localhost:9200/yama/playlist/_search
     }
 }
-
+function parsePlaylists(playlist) {
+    let res = {
+        '_id': playlist._id,
+        "name": playlist._source.name,
+		"description": playlist._source.description,
+        "musics": playlist._source.musics, 
+    }
+    return res
+} 
 function handleResponse(err, res, expectedStatusCode, body, cb, message){
     if(err)
         return cb(err, null) 

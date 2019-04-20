@@ -7,14 +7,14 @@ module.exports = (app,yamaServices) => {
 	app.get('/api/artists/:name', getArtistsByName)
 	app.get('/api/albums/:mbid', getAlbumsByMbid)
 	app.get('/api/albums/:mbid/tracks', getTracksByMbid)
-	// to be implemented \/ //
-	app.get("/yama/playlists", getPlaylists)
 	app.post("/yama/playlist", createPlaylist) 
+	app.get("/yama/playlists", getPlaylists)
+	/*to be implemented \/ // 
 	app.get("/yama/playlists/:id",getPlaylistInfo)
 	app.put("/yama/playlists/:id/:musicId",addMusicToPlaylist)
 	app.put("/yama/playlist/:playlistId", editPlaylist)
 	app.delete("/yama/playlists/:id/:musicId",deleteMusicFromPlaylist)
-	// to be implemented end //
+	// to be implemented end */
 	app.use(resourceNotFound)
 	return app
  
