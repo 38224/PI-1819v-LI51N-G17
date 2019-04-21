@@ -24,7 +24,18 @@ class YamaDb {
 				handleResponse(err, res, 201, { 'status': 'created', '_id': body._id }, cb)
 			}
 		)
-    }
+	}
+	editPlaylist(playlistId,body,cb) {  // edita grupo com {_id:xxx,name:nome,description:desc,musics:[]}
+		request.post(
+		{
+			uri:`${this.uri}/playlist/${playlistId}`,  
+				body: body,
+				json: true
+			},
+			(err, res, body) => {
+				handleResponse(err, res, 200, { 'status': 'updated' }, cb)
+		}) 
+	}
 	getPlaylists(cb) {
 		request.get(
 			{

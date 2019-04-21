@@ -10,9 +10,9 @@ module.exports = (app,yamaServices) => {
 	app.post("/yama/playlist", createPlaylist) 
 	app.get("/yama/playlists", getPlaylists)
 	app.get("/yama/playlist/:mbid",getPlaylistInfo)
-	/*to be implemented \/ // 
-	app.put("/yama/playlists/:id/:musicId",addMusicToPlaylist)
 	app.put("/yama/playlist/:playlistId", editPlaylist)
+	/*to be implemented \/ // 
+	app.put("/yama/playlists/:id/:musicId",addMusicToPlaylist)~
 	app.delete("/yama/playlists/:id/:musicId",deleteMusicFromPlaylist)
 	// to be implemented end */
 	app.use(resourceNotFound)
@@ -42,6 +42,14 @@ module.exports = (app,yamaServices) => {
 		bodyParser(req,(body) =>{
 			yamaServices.createPlaylist(body,(err,data) => {
 				handleResponse(resp,201,err,data)
+			}) 
+		})
+	}
+	function editPlaylist(req, resp){ 
+		let playlistId = req.params.playlistId
+		bodyParser(req,(body) =>{
+			yamaServices.editPlaylist(playlistId,body,(err,data) => {
+				handleResponse(resp,200,err,data)
 			}) 
 		})
 	}
