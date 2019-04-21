@@ -26,7 +26,7 @@ class YamaDb {
 		)
 	}
 	editPlaylist(playlistId,body,cb) {  // edita grupo com {_id:xxx,name:nome,description:desc,musics:[]}
-		request.post(
+		request.put(
 		{
 			uri:`${this.uri}/playlist/${playlistId}`,  
 				body: body,
