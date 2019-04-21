@@ -9,8 +9,8 @@ module.exports = (app,yamaServices) => {
 	app.get('/api/albums/:mbid/tracks', getTracksByMbid)
 	app.post("/yama/playlist", createPlaylist) 
 	app.get("/yama/playlists", getPlaylists)
-	/*to be implemented \/ // 
 	app.get("/yama/playlists/:id",getPlaylistInfo)
+	/*to be implemented \/ // 
 	app.put("/yama/playlists/:id/:musicId",addMusicToPlaylist)
 	app.put("/yama/playlist/:playlistId", editPlaylist)
 	app.delete("/yama/playlists/:id/:musicId",deleteMusicFromPlaylist)
@@ -47,6 +47,12 @@ module.exports = (app,yamaServices) => {
 	}
 	function getPlaylists(req, resp){ 
 		yamaServices.getPlaylists((err,data) => {
+			handleResponse(resp,200,err,data)
+		})
+	}
+	function getPlaylistInfo(req, resp){
+		let id = req.params.id		
+		yamaServices.getPlaylistInfo(id,(err,data) => {
 			handleResponse(resp,200,err,data)
 		})
 	}

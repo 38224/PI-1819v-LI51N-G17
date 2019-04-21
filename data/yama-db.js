@@ -39,6 +39,20 @@ class YamaDb {
 		)
 		//http://localhost:9200/yama/playlist/_search
     }
+	getPlaylistInfo(id,cb) {
+		request.get(
+			{
+				uri:`${this.uri}/playlist/${id}`,
+				headers: { 'content-type' : 'application/json' },
+				json: true
+			},
+			(err, res, body) => {
+				console.log(body._source)
+        		handleResponse(err, res, 200, body._source, cb)
+        	}
+		)
+		//http://localhost:9200/yama/playlist/ocKQPWoBFqJyB8idQUxg
+    }
 }
 function parsePlaylists(playlist) {
     let res = {
