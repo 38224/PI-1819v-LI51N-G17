@@ -66,13 +66,14 @@ class YamaDb {
 }
 function parsePlaylists(playlist) {
     let res = {
-        '_id': playlist._id,
-        "name": playlist._source.name,
-		"description": playlist._source.description,
-        "musics": playlist._source.musics, 
+		'_id': playlist._id,
+        'name': playlist._source.name,
+		'description': playlist._source.description,
+		'duration': 0,
+        'musics': playlist._source.musics, 
     }
     return res
-} 
+}
 function handleResponse(err, res, expectedStatusCode, body, cb, message){
     if(err)
         return cb(err, null) 

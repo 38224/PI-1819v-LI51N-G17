@@ -4,37 +4,35 @@ const bodyParser = require('../utils/body-parser')
 
 module.exports = (app,yamaServices) => {
 
-	app.get('/api/artists/:name', getArtistsByName)
-	app.get('/api/artists/:mbid/albums', getAlbumsByMbid)
-	app.get('/api/albums/:mbid/tracks', getTracksByMbid)
-	app.post("/yama/playlist", createPlaylist) 
+	app.get('/api/artists/:artistName', getArtistsByName)
+	app.get('/api/artists/:artistId/albums', getAlbumsByMbid)
+	app.get('/api/albums/:albumId/tracks', getTracksByMbid)
+	app.post("/yama/playlists", createPlaylist) 
 	app.get("/yama/playlists", getPlaylists)
-	app.get("/yama/playlist/:mbid",getPlaylistInfo)
-	app.put("/yama/playlist/:playlistId", editPlaylist)
-	/*to be implemented \/ // 
-	app.put("/yama/playlists/:id/:musicId",addMusicToPlaylist)~
-	app.delete("/yama/playlists/:id/:musicId",deleteMusicFromPlaylist)
-	// to be implemented end */
+	app.get("/yama/playlists/:playlistId",getPlaylistInfo)
+	app.put("/yama/playlists/:playlistId", editPlaylist)
+	app.put("/yama/playlists/:playlistId/albums/:albumId/musics/:musicId",addMusicToPlaylist)
+	app.delete("/yama/playlists/:playlistId/musics/:musicId",deleteMusicFromPlaylist)
 	app.use(resourceNotFound)
 	return app
  
 	function getArtistsByName(req, resp){ 
-		let name = req.params.name 
-		yamaServices.getArtistsByName(name,(err,data) => {
+		let artistName = req.params.artistName 
+		yamaServices.getArtistsByName(artistName,(err,data) => {
 			handleResponse(resp,200,err,data)
 		}) 
 	}
 	 
 	function getAlbumsByMbid(req, resp){
-		let mbid = req.params.mbid
-		yamaServices.getAlbumsByMbid(mbid,(err,data) => {
+		let artistId = req.params.artistId
+		yamaServices.getAlbumsByMbid(artistId,(err,data) => {
 			handleResponse(resp,200,err,data)
 		}) 
 	}
 	
 	function getTracksByMbid(req, resp){
-		let mbid = req.params.mbid
-		yamaServices.getTracksByMbid(mbid,(err,data) => {
+		let albumId = req.params.albumId
+		yamaServices.getTracksByMbid(albumId,(err,data) => {
 			handleResponse(resp,200,err,data)
 		})
 	}
@@ -59,8 +57,8 @@ module.exports = (app,yamaServices) => {
 		})
 	}
 	function getPlaylistInfo(req, resp){
-		let mbid = req.params.mbid		
-		yamaServices.getPlaylistInfo(mbid,(err,data) => {
+		let playlistId = req.params.playlistId		
+		yamaServices.getPlaylistInfo(playlistId,(err,data) => {
 			handleResponse(resp,200,err,data)
 		})
 	}
