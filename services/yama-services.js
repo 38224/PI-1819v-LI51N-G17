@@ -43,6 +43,25 @@ class Services {
 			})
 		})
 	}
+
+
+	deleteMusicFromPlaylist(playlistId,musicName, cb) {
+		this.yamaDb.getPlaylistInfo(playlistId, (err, pl) => {
+			if(err)
+			return cb(err)
+			const idx = pl.musics.findIndex(track => track.name == musicName)
+			if(idx < 0)
+				return cb({ 'code': 400, 'message': 'playlist does not contain that music'}, null) 
+			const dur = pl.musics[idx].duration
+			pl.duration -= dur // extract the duration time of the song removed
+			pl.musics.splice(idx, 1) // removes 1 element at index idx
+			this.yamaDb.editPlaylist(playlistId, pl, (err, data) => {
+			if(err)
+				return cb(err)
+			cb(null, { 'status': 'deleted' })
+			})
+		})
+	}
   
 }
 
