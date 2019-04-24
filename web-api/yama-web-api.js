@@ -5,7 +5,7 @@ const bodyParser = require('../utils/body-parser')
 module.exports = (app,yamaServices) => {
 
 	app.get('/api/artists/:name', getArtistsByName)
-	app.get('/api/albums/:mbid', getAlbumsByMbid)
+	app.get('/api/artists/:mbid/albums', getAlbumsByMbid)
 	app.get('/api/albums/:mbid/tracks', getTracksByMbid)
 	app.post("/yama/playlist", createPlaylist) 
 	app.get("/yama/playlists", getPlaylists)
