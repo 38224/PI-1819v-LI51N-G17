@@ -28,7 +28,7 @@ class YamaDb {
 	editPlaylist(playlistId,body,cb) {  // edita grupo com {_id:xxx,name:nome,description:desc,musics:[]}
 		request.put(
 		{
-			uri:`${this.uri}/playlist/${playlistId}`,  
+				uri:`${this.uri}/playlist/${playlistId}`,  
 				body: body,
 				json: true
 			},
@@ -44,7 +44,6 @@ class YamaDb {
 				json: true
 			},
 			(err, res, body) => {
-				console.log(body.hits.hits[0]._source)
         		handleResponse(err, res, 200, body.hits.hits.map( p => parsePlaylists(p)), cb)
         	}
 		)

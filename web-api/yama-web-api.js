@@ -62,7 +62,14 @@ module.exports = (app,yamaServices) => {
 			handleResponse(resp,200,err,data)
 		})
 	}
-
+	function addMusicToPlaylist(req, resp){
+		let playlistId = req.params.playlistId	
+		let albumId = req.params.albumId	
+		let musicName = req.params.musicName	
+		yamaServices.addMusicToPlaylist(playlistId,albumId,musicName,(err,data) => {
+			handleResponse(resp,200,err,data)
+		})
+	}
 	function deleteMusicFromPlaylist(req, resp){
 		let playlistId = req.params.playlistId	
 		let musicName = req.params.musicName	
