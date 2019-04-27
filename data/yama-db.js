@@ -13,6 +13,7 @@ class YamaDb {
 	}
 	createPlaylist(playlist,cb) {  // cria grupo com {_id:xxx,name:nome,description:desc,musics:[]}
 		playlist.musics = []
+		playlist.duration = 0
 		request.post(
 			{
 				uri:`${this.uri}/playlist`,
@@ -68,7 +69,7 @@ function parsePlaylists(playlist) {
 		'_id': playlist._id,
         'name': playlist._source.name,
 		'description': playlist._source.description,
-		'duration': 0,
+		'duration': playlist._source.duration,
         'musics': playlist._source.musics, 
     }
     return res

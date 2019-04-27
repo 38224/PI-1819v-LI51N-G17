@@ -33,10 +33,11 @@ class Services {
 		this.yamaDb.getPlaylistInfo(playlistId,(err, p) => { 
 			if(err)
 				return cb(err)
-			if(!body.name)  body.name = p.name
-			if(!body.description) body.description = p.description
-			body.musics = p.musics 
-			this.yamaDb.editPlaylist(playlistId,body,(err, data) => {
+			if(body.name)  p.name = body.name
+			if(body.description) p.description = body.description
+			//tirar o _id porque 'Field [_id] is a metadata field and cannot be added inside a document.'
+			delete p._id
+			this.yamaDb.editPlaylist(playlistId,p,(err, data) => {
 				if(err)
 					return cb(err) 
 				cb(null, data)
@@ -52,18 +53,20 @@ class Services {
 					return cb(err)
 				const idx = data.tracks.track.findIndex(track => track.name == musicName)
 				if(idx < 0)
-					return cb({ 'code': 400, 'message': 'album does not contain that music'}, null)
-				const dur = data.tracks.track[idx].duration	
-				pl.duration = parseInt(pl.duration+dur) // add the duration time of the song
+					return cb({ 'code': 404, 'message': 'album does not contain that music'}, null)
+				const idx2 = pl.musics.findIndex(track => track.url == data.tracks.track[idx].url)
+				if(idx2 >= 0)
+					return cb({ 'code': 409, 'message': 'music alredy inserted in playlist'}, null)
+				const dur = parseInt(data.tracks.track[idx].duration)
+				pl.duration = pl.duration+dur // add the duration time of the song
 				console.log(pl.duration)
 				// colocar uma musica apenas com a informacao que queremos
-				const music = {'name': data.tracks.track[idx].name,'duration': data.tracks.track[idx].duration,'artist' :data.tracks.track[idx].artist}
+				const music = {'name': data.tracks.track[idx].name,'url':data.tracks.track[idx].url,'duration': dur,'artist' :data.tracks.track[idx].artist}
 				pl.musics.push(music)
 				//tirar o _id porque 'Field [_id] is a metadata field and cannot be added inside a document.'
-				const playlist = {'name': pl.name,'description': pl.description,'duration': pl.duration,'musics': pl.musics, }
-				console.log(playlist)
-				this.yamaDb.editPlaylist(playlistId, playlist, (err, data2) => {
-					if(err)
+				delete pl._id
+				this.yamaDb.editPlaylist(playlistId, pl, (err, data2) => {
+					if(err) 
 						return cb(err)
 					cb(null, { 'status': 'updated' })
 				})
@@ -82,9 +85,8 @@ class Services {
 			console.log(pl.duration)
 			pl.musics.splice(idx, 1) // removes 1 element at index idx
 			//tirar o _id porque 'Field [_id] is a metadata field and cannot be added inside a document.'
-			const playlist = {'name': pl.name,'description': pl.description,'duration': pl.duration,'musics': pl.musics, }
-			console.log(playlist)
-			this.yamaDb.editPlaylist(playlistId, playlist, (err, data) => {
+			delete pl._id
+			this.yamaDb.editPlaylist(playlistId, pl, (err, data) => {
 			if(err)
 				return cb(err)
 			cb(null, { 'status': 'deleted' })
