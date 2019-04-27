@@ -18,8 +18,7 @@ class ServicesMock {
         cb(null, result)
     }
 
-    getAlbumsByMbid(mbid, cb) {
-        console.log(mbid)
+    getAlbumsByMbid(mbid, cb) { 
         if (!albums[mbid])
             return cb({ 'code': 400, 'message': 'Invalid Artist Mbid' }, null)
         const albumsResult = []
@@ -36,43 +35,52 @@ class ServicesMock {
 
     ///////////////////// lastfmdata end ///////////////////
     ///////////////////// db start ///////////////////
-    createPlaylist(playlist, cb) {
-        const _id = idplaylist
-        const pl = {
-            '_id': _id,
-            'name': playlist.name,
-            'description': playlist.description,
-            'duration': 0,
-            'musics': []
-        }
-        playlists[_id] = pl
-        cb(null, { 'status': 'created', '_id': _id })
-    }
+	createPlaylist(playlist,cb) { 
+		const _id = idplaylist
+		const pl = {
+			'_id':_id,
+			'name':playlist.name,
+			'description':playlist.description,
+			'duration': 0, 
+			'musics':[]
+		}
+		playlists[_id] = pl
+		cb(null, { 'status': 'created', '_id': _id})
+	}
 
-    editPlaylist(playlistId, body, cb) {
-        const pl = playlists[idplaylist]
-        if (!pl)
-            return cb({ 'code': 404, 'message': 'Group does not exist' })
-        playlists[playlistId] = body
-        cb(null, { 'status': 'updated' })
-    }
-
-    getPlaylists(cb) {
-        cb(null, playlists)
-    }
-
-    getPlaylistInfo(mbid, cb) {
-        const pl = playlists[idplaylist]
-        if (!pl)
-            return cb({ 'code': 404, 'message': 'Group does not exist' })
+	editPlaylist(playlistId,body,cb) {  
+		const pl = playlists[idplaylist]
+		if(!pl)
+            return cb({ 'code': 404, 'message': 'Playlist does not exist'})
+		if(body.name)  pl.name = body.name
+		if(body.description) pl.description = body.description
+		playlists[playlistId] = pl  
+        cb(null, { 'status': 'updated' }) 
+	}
+	  
+	getPlaylists(cb){
+		cb(null, playlists)
+	}
+	
+    getPlaylistInfo(mbid,cb) {
+		const pl = playlists[idplaylist]
+        if(!pl)
+            return cb({ 'code': 404, 'message': 'playlist does not exist'})
         cb(null, playlists[mbid])
-
+		
+    }
+	deletePlaylist(playlistId, cb) {
+        const pl = playlists[idplaylist]
+        if(!pl)
+            return cb({ 'code': 404, 'message': 'Playlist does not exist'})
+        delete playlists[playlistId]
+        cb(null, { 'status': 'deleted' })
     }
     ///////////////////// db end ///////////////////
     addMusicToPlaylist(playlistId, albumId, musicName, cb) {
-
+		
         let pl = playlists[playlistId]
-        let ts = albums[albumId]
+        let ts = tracks[albumId]
         if (!pl)
             return cb({ 'code': 404, 'message': 'playlist does not exist' })
         if (!ts)
@@ -84,13 +92,13 @@ class ServicesMock {
         const idx2 = pl.musics.findIndex(track => track.url == ts.tracks.track[idx].url)
         if (idx2 >= 0)
             return cb({ 'code': 409, 'message': 'music alredy inserted in playlist' }, null)
+		const dur = parseInt(ts.tracks.track[idx].duration)
         const music = {
             'name': ts.tracks.track[idx].name,
             'url': ts.tracks.track[idx].url,
             'duration': dur,
             'artist': ts.tracks.track[idx].artist
         }
-        const dur = parseInt(data.tracks.track[idx].duration)
         pl.duration = pl.duration + dur // add the duration time of the song
         pl.musics.push(music)
         playlists[playlistId] = pl

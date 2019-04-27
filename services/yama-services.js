@@ -61,8 +61,7 @@ class Services {
 				if(idx2 >= 0)
 					return cb({ 'code': 409, 'message': 'music alredy inserted in playlist'}, null)
 				const dur = parseInt(data.tracks.track[idx].duration)
-				pl.duration = pl.duration+dur // add the duration time of the song
-				console.log(pl.duration)
+				pl.duration = pl.duration+dur // add the duration time of the song 
 				// colocar uma musica apenas com a informacao que queremos
 				const music = {'name': data.tracks.track[idx].name,'url':data.tracks.track[idx].url,'duration': dur,'artist' :data.tracks.track[idx].artist}
 				pl.musics.push(music)
@@ -84,8 +83,7 @@ class Services {
 			if(idx < 0)
 				return cb({ 'code': 400, 'message': 'playlist does not contain that music'}, null) 
 			const dur = pl.musics[idx].duration
-			pl.duration = parseInt(pl.duration-dur) // extract the duration time of the song removed
-			console.log(pl.duration)
+			pl.duration = parseInt(pl.duration-dur) // extract the duration time of the song removed 
 			pl.musics.splice(idx, 1) // removes 1 element at index idx
 			//tirar o _id porque 'Field [_id] is a metadata field and cannot be added inside a document.'
 			delete pl._id

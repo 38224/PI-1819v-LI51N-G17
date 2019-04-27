@@ -22,7 +22,7 @@ class YamaDbMock {
 	editPlaylist(playlistId,body,cb) {  
 		const pl = playlists[idplaylist]
 		if(!pl)
-            return cb({ 'code': 404, 'message': 'Group does not exist'})
+            return cb({ 'code': 404, 'message': 'Playlist does not exist'})
 		playlists[playlistId] = body
         cb(null, { 'status': 'updated' }) 
 	}
@@ -34,15 +34,15 @@ class YamaDbMock {
     getPlaylistInfo(mbid,cb) {
 		const pl = playlists[idplaylist]
         if(!pl)
-            return cb({ 'code': 404, 'message': 'Group does not exist'})
+            return cb({ 'code': 404, 'message': 'Playlist does not exist'})
         cb(null, playlists[mbid])
 		
     }
 	deletePlaylist(playlistId, cb) {
         const pl = playlists[idplaylist]
         if(!pl)
-            return cb({ 'code': 404, 'message': 'Group does not exist'})
-        delete groups[playlistId]
+            return cb({ 'code': 404, 'message': 'Playlist does not exist'})
+        delete playlists[playlistId]
         cb(null, { 'status': 'deleted' })
     }
 }

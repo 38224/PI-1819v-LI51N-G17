@@ -2,11 +2,10 @@
 
 class LastFMMock {
 
-    static init(token) {
+    static init(dummy) { // only yo match the same function
         return new LastFMMock()
     }
-
-
+ 
     getArtistsByName(name, cb) {
 
         if (!artists[name])
@@ -17,7 +16,6 @@ class LastFMMock {
     }
 
     getAlbumsByMbid(mbid, cb) {
-        console.log(mbid)
         if (!albums[mbid])
             return cb({ 'code': 400, 'message': 'Invalid Artist Mbid' }, null)
         const albumsResult = []

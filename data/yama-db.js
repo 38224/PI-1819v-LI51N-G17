@@ -94,7 +94,7 @@ function handleResponse(err, res, expectedStatusCode, body, cb, message){
         case expectedStatusCode: 
             cb(null, body); break
         case 404: 
-            cb({ 'code': res.statusCode, 'message': 'Group does not exist' }, null); break
+            cb({ 'code': res.statusCode, 'message': 'Playlist does not exist' }, null); break
         default: 
             cb({ 'code': res.statusCode, 'message': message }, null); break
     }

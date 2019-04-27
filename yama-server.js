@@ -13,16 +13,19 @@ const es = {
 	'index': 'yama'
 }
 
-//const lastfmData = require('./data/lastfm-data').init(api_info)
-//const yamaDb = require('./data/yama-db').init(es)
+const lastfmData = require('./data/lastfm-data').init(api_info)
+const yamaDb = require('./data/yama-db').init(es)
+const yamaServices = require('./services/yama-services').init(lastfmData,yamaDb)
+
 
 //mocks start//
-const lastfmData = require('./data/lastfm-data-mock').init(api_info)
-const yamaDb = require('./data/yama-db-mock').init(es)
+//const lastfmData = require('./data/lastfm-data-mock').init(api_info)
+//const yamaDb = require('./data/yama-db-mock').init(es)
+//const yamaServices = require('./services/yama-services-mock').init(lastfmData,yamaDb)
 //mocks end//
 
-const yamaServices = require('./services/yama-services').init(lastfmData,yamaDb)
-//const yamaServices = require('./services/yama-services-mock').init(lastfmData,yamaDb)
+
+
 const app = new Router()
 require('./web-api/yama-web-api')(app, yamaServices)
 
