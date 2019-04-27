@@ -16,8 +16,7 @@ const es = {
 const lastfmData = require('./data/lastfm-data').init(api_info)
 const yamaDb = require('./data/yama-db').init(es)
 const yamaServices = require('./services/yama-services').init(lastfmData,yamaDb)
-
-
+ 
 //mocks start//
 //const lastfmData = require('./data/lastfm-data-mock').init(api_info)
 //const yamaDb = require('./data/yama-db-mock').init(es)
