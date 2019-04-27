@@ -1,100 +1,352 @@
 'use strict'
- 
-class Services {
+
+class ServicesMock {
 	
 	constructor(lastfmData,yamaDb) {
-		this.lastfmData = lastfmData
-        this.yamaDb = yamaDb
 	}
 	
-	static init(lastfmData,yamaDb) {
-		return new Services(lastfmData,yamaDb)
-	}
-	getArtistsByName(name,cb) { 
-        this.lastfmData.getArtistsByName(name,cb)
+    static init(lastfmData, yamaDb) {
+        return new ServicesMock(lastfmData, yamaDb)
     }
-	getAlbumsByMbid(mbid,cb) { 
-        this.lastfmData.getAlbumsByMbid(mbid,cb)
-    }
-	getTracksByMbid(mbid,cb) {  
-        this.lastfmData.getTracksByMbid(mbid,cb)
-    }
-	createPlaylist(body,cb) {
-        this.yamaDb.createPlaylist(body,cb)
+	///////////////////// db start ///////////////////
+	createPlaylist(playlist,cb) { 
+		const _id = idplaylist
+		const pl = {
+			'_id':_id,
+			'name':playlist.name,
+			'description':playlist.description,
+			'duration': 0, 
+			'musics':[]
+		}
+		playlists[_id] = pl
+		cb(null, { 'status': 'created', '_id': _id})
 	}
-	getPlaylists(cb) {
-        this.yamaDb.getPlaylists(cb)
-	}
-	getPlaylistInfo(id,cb) {
-        this.yamaDb.getPlaylistInfo(id,cb)
-	}
-	editPlaylist(playlistId,body,cb) {
 
-		this.yamaDb.getPlaylistInfo(playlistId,(err, p) => { 
-			if(err)
-				return cb(err)
-			if(body.name)  p.name = body.name
-			if(body.description) p.description = body.description
-			//tirar o _id porque 'Field [_id] is a metadata field and cannot be added inside a document.'
-			delete p._id
-			this.yamaDb.editPlaylist(playlistId,p,(err, data) => {
-				if(err)
-					return cb(err) 
-				cb(null, data)
-			})
-		})
+	editPlaylist(playlistId,body,cb) {  
+		const pl = playlists[idplaylist]
+		if(!pl)
+            return cb({ 'code': 404, 'message': 'Group does not exist'})
+		playlists[playlistId] = body
+        cb(null, { 'status': 'updated' }) 
 	}
+	
+	getPlaylists(cb){
+		cb(null, playlists)
+	}
+	
+    getPlaylistInfo(mbid,cb) {
+		const pl = playlists[idplaylist]
+        if(!pl)
+            return cb({ 'code': 404, 'message': 'Group does not exist'})
+        cb(null, playlists[mbid])
+		
+    }
+	///////////////////// db end ///////////////////
 	addMusicToPlaylist(playlistId,albumId,musicName, cb) { 
-		this.yamaDb.getPlaylistInfo(playlistId, (err, pl) => {
-			if(err)
-				return cb(err)
-			this.lastfmData.getTracksByMbid(albumId,(err, data) => {
-				if(err)
-					return cb(err)
-				const idx = data.tracks.track.findIndex(track => track.name == musicName)
-				if(idx < 0)
-					return cb({ 'code': 404, 'message': 'album does not contain that music'}, null)
-				const idx2 = pl.musics.findIndex(track => track.url == data.tracks.track[idx].url)
-				if(idx2 >= 0)
-					return cb({ 'code': 409, 'message': 'music alredy inserted in playlist'}, null)
-				const dur = parseInt(data.tracks.track[idx].duration)
-				pl.duration = pl.duration+dur // add the duration time of the song
-				console.log(pl.duration)
-				// colocar uma musica apenas com a informacao que queremos
-				const music = {'name': data.tracks.track[idx].name,'url':data.tracks.track[idx].url,'duration': dur,'artist' :data.tracks.track[idx].artist}
-				pl.musics.push(music)
-				//tirar o _id porque 'Field [_id] is a metadata field and cannot be added inside a document.'
-				delete pl._id
-				this.yamaDb.editPlaylist(playlistId, pl, (err, data2) => {
-					if(err) 
-						return cb(err)
-					cb(null, { 'status': 'updated' })
-				})
-			}) 
-		})
+	
+		let pl = playlists[playlistId]
+		let tracks = albums[albumId]
+		if(!pl)
+			return cb({ 'code': 404, 'message': 'playlist does not exist'})
+		if(!album)
+			return cb({ 'code': 404, 'message': 'album does not exist'})
+		let music = tracks[musicName]
+		if(!music)
+			return cb({ 'code': 404, 'message': 'music does not exist'})
+		if(pl.musics[music.url])
+			return cb({ 'code': 409, 'message': 'music already inserted'})
+		
+		pl.musics.push(music)
+		pl.duration = pl.duration + music.duration
+		playlists[playlistId] = pl
+		cb(null, { status: 'updated' })
 	}
 	deleteMusicFromPlaylist(playlistId,musicName, cb) {
-		this.yamaDb.getPlaylistInfo(playlistId, (err, pl) => {
-			if(err)
-			return cb(err)
-			const idx = pl.musics.findIndex(track => track.name == musicName)
-			if(idx < 0)
-				return cb({ 'code': 400, 'message': 'playlist does not contain that music'}, null) 
-			const dur = pl.musics[idx].duration
-			pl.duration = parseInt(pl.duration-dur) // extract the duration time of the song removed
-			console.log(pl.duration)
-			pl.musics.splice(idx, 1) // removes 1 element at index idx
-			//tirar o _id porque 'Field [_id] is a metadata field and cannot be added inside a document.'
-			delete pl._id
-			this.yamaDb.editPlaylist(playlistId, pl, (err, data) => {
-			if(err)
-				return cb(err)
-			cb(null, { 'status': 'deleted' })
-			})
-		})
+		let pl = playlists[playlistId]
+		if(!pl)
+			return cb({ 'code': 404, 'message': 'playlist does not exist'})
+		const idx = pl.musics.findIndex(track => track.name == musicName)
+		if(idx < 0)
+			return cb({ 'code': 400, 'message': 'playlist does not contain that music'})
+		 
+		const dur = pl.musics[idx].duration
+		pl.duration = pl.duration-dur // extract the duration time of the song removed 
+		pl.musics.splice(idx, 1) // removes 1 element at index idx 
+		playlists[playlistId] = pl 
+		cb(null, { 'status': 'deleted' })  
 	}
-  
 }
 
-module.exports = Services
+let idplaylist = 1001
+
+const playlists = {
+	1000:{
+    "_id": 1000,
+    "name": "g17 ",
+    "description": "my list",
+    "duration": 437,
+    "musics": [
+        {
+            "name": "Ernie",
+            "url": "https://www.last.fm/music/Fat+Freddy%27s+Drop/_/Ernie",
+            "duration": 437,
+            "artist": {
+                "name": "Fat Freddy's Drop",
+                "mbid": "d451395a-f768-432e-bb70-d38c32baf4cb",
+                "url": "https://www.last.fm/music/Fat+Freddy%27s+Drop"
+            }
+        }
+    ]
+	},
+	1001:{
+    "_id": 1001,
+    "name": "g17 ",
+    "description": "my list",
+    "duration": 0,
+    "musics": []
+	}
+}
+
+const artists ={
+    "Fat%20Freddy%27s%20Drop": {
+		"name": "Fat Freddy's Drop",
+		"listeners": "286462",
+		"mbid": "d451395a-f768-432e-bb70-d38c32baf4cb",
+		"url": "https://www.last.fm/music/Fat+Freddy%27s+Drop"
+	},
+	"Skream%20%2F%20Fat%20Freddy%27s%20Drop": {
+		"name": "Skream / Fat Freddy's Drop",
+		"listeners": "2841",
+		"mbid": "",
+		"url": "https://www.last.fm/music/Skream+%2F+Fat+Freddy%27s+Drop"
+	},
+	"Fat%20Freddy%20%27%20s%20Drop":{
+		"name": "Fat Freddy ' s Drop",
+		"listeners": "22",
+		"mbid": "",
+		"url": "https://www.last.fm/music/Fat+Freddy+%27+s+Drop"
+	},
+	"Skream%20%28Tease%20Cay%27s%20Cray%20%2D%20Fat%20Freddy%27s%20Drop%20%28Mala%20Remix%29":{
+		"name": "Skream (Tease Cay's Cray - Fat Freddy's Drop (Mala Remix)",
+		"listeners": "1652",
+		"mbid": "",
+		"url": "https://www.last.fm/music/Skream+(Tease+Cay%27s+Cray+-+Fat+Freddy%27s+Drop+(Mala+Remix)"
+	}   
+}
+    
+const album =  {
+   "d451395a-f768-432e-bb70-d38c32baf4cb": {
+		"0b3d401e-aa43-3e84-9b9b-51e0b67bce8a":{
+			"name": "Based on a True Story",
+			"playcount": 2867723,
+			"mbid": "0b3d401e-aa43-3e84-9b9b-51e0b67bce8a",
+			"url": "https://www.last.fm/music/Fat+Freddy%27s+Drop/Based+on+a+True+Story",
+			"artist": {
+				"name": "Fat Freddy's Drop",
+				"mbid": "d451395a-f768-432e-bb70-d38c32baf4cb",
+				"url": "https://www.last.fm/music/Fat+Freddy%27s+Drop"
+			}
+		},
+		"62626e7f-a10e-409c-a4fc-36deaf4f5a13":{
+			"name": "Blackbird",
+			"playcount": 610147,
+			"mbid": "62626e7f-a10e-409c-a4fc-36deaf4f5a13",
+			"url": "https://www.last.fm/music/Fat+Freddy%27s+Drop/Blackbird",
+			"artist": {
+				"name": "Fat Freddy's Drop",
+				"mbid": "d451395a-f768-432e-bb70-d38c32baf4cb",
+				"url": "https://www.last.fm/music/Fat+Freddy%27s+Drop"
+			}
+		}
+	}
+}
+    
+
+const tracks = {
+    "0b3d401e-aa43-3e84-9b9b-51e0b67bce8a": 
+    {
+        "name": "Based on a True Story",
+        "artist": "Fat Freddy's Drop",
+        "mbid": "0b3d401e-aa43-3e84-9b9b-51e0b67bce8a",
+        "url": "https://www.last.fm/music/Fat+Freddy%27s+Drop/Based+on+a+True+Story",
+        "listeners": "189021",
+        "playcount": "2867723",
+        "tracks": {
+            "track": [
+                {
+                    "name": "Ernie",
+                    "url": "https://www.last.fm/music/Fat+Freddy%27s+Drop/_/Ernie",
+                    "duration": "437",
+                    "@attr": {
+                        "rank": "1"
+                    },
+                    "streamable": {
+                        "#text": "0",
+                        "fulltrack": "0"
+                    },
+                    "artist": {
+                        "name": "Fat Freddy's Drop",
+                        "mbid": "d451395a-f768-432e-bb70-d38c32baf4cb",
+                        "url": "https://www.last.fm/music/Fat+Freddy%27s+Drop"
+                    }
+                },
+                {
+                    "name": "Cay's Crays",
+                    "url": "https://www.last.fm/music/Fat+Freddy%27s+Drop/_/Cay%27s+Crays",
+                    "duration": "427",
+                    "@attr": {
+                        "rank": "2"
+                    },
+                    "streamable": {
+                        "#text": "0",
+                        "fulltrack": "0"
+                    },
+                    "artist": {
+                        "name": "Fat Freddy's Drop",
+                        "mbid": "d451395a-f768-432e-bb70-d38c32baf4cb",
+                        "url": "https://www.last.fm/music/Fat+Freddy%27s+Drop"
+                    }
+                },
+                {
+                    "name": "This Room",
+                    "url": "https://www.last.fm/music/Fat+Freddy%27s+Drop/_/This+Room",
+                    "duration": "299",
+                    "@attr": {
+                        "rank": "3"
+                    },
+                    "streamable": {
+                        "#text": "0",
+                        "fulltrack": "0"
+                    },
+                    "artist": {
+                        "name": "Fat Freddy's Drop",
+                        "mbid": "d451395a-f768-432e-bb70-d38c32baf4cb",
+                        "url": "https://www.last.fm/music/Fat+Freddy%27s+Drop"
+                    }
+                },
+                {
+                    "name": "Ray Ray",
+                    "url": "https://www.last.fm/music/Fat+Freddy%27s+Drop/_/Ray+Ray",
+                    "duration": "458",
+                    "@attr": {
+                        "rank": "4"
+                    },
+                    "streamable": {
+                        "#text": "0",
+                        "fulltrack": "0"
+                    },
+                    "artist": {
+                        "name": "Fat Freddy's Drop",
+                        "mbid": "d451395a-f768-432e-bb70-d38c32baf4cb",
+                        "url": "https://www.last.fm/music/Fat+Freddy%27s+Drop"
+                    }
+                },
+                {
+                    "name": "Dark Days",
+                    "url": "https://www.last.fm/music/Fat+Freddy%27s+Drop/_/Dark+Days",
+                    "duration": "400",
+                    "@attr": {
+                        "rank": "5"
+                    },
+                    "streamable": {
+                        "#text": "0",
+                        "fulltrack": "0"
+                    },
+                    "artist": {
+                        "name": "Fat Freddy's Drop",
+                        "mbid": "d451395a-f768-432e-bb70-d38c32baf4cb",
+                        "url": "https://www.last.fm/music/Fat+Freddy%27s+Drop"
+                    }
+                },
+                {
+                    "name": "Flashback",
+                    "url": "https://www.last.fm/music/Fat+Freddy%27s+Drop/_/Flashback",
+                    "duration": "391",
+                    "@attr": {
+                        "rank": "6"
+                    },
+                    "streamable": {
+                        "#text": "0",
+                        "fulltrack": "0"
+                    },
+                    "artist": {
+                        "name": "Fat Freddy's Drop",
+                        "mbid": "d451395a-f768-432e-bb70-d38c32baf4cb",
+                        "url": "https://www.last.fm/music/Fat+Freddy%27s+Drop"
+                    }
+                },
+                {
+                    "name": "Roady",
+                    "url": "https://www.last.fm/music/Fat+Freddy%27s+Drop/_/Roady",
+                    "duration": "430",
+                    "@attr": {
+                        "rank": "7"
+                    },
+                    "streamable": {
+                        "#text": "0",
+                        "fulltrack": "0"
+                    },
+                    "artist": {
+                        "name": "Fat Freddy's Drop",
+                        "mbid": "d451395a-f768-432e-bb70-d38c32baf4cb",
+                        "url": "https://www.last.fm/music/Fat+Freddy%27s+Drop"
+                    }
+                },
+                {
+                    "name": "Wandering Eye",
+                    "url": "https://www.last.fm/music/Fat+Freddy%27s+Drop/_/Wandering+Eye",
+                    "duration": "581",
+                    "@attr": {
+                        "rank": "8"
+                    },
+                    "streamable": {
+                        "#text": "0",
+                        "fulltrack": "0"
+                    },
+                    "artist": {
+                        "name": "Fat Freddy's Drop",
+                        "mbid": "d451395a-f768-432e-bb70-d38c32baf4cb",
+                        "url": "https://www.last.fm/music/Fat+Freddy%27s+Drop"
+                    }
+                },
+                {
+                    "name": "Del Fuego",
+                    "url": "https://www.last.fm/music/Fat+Freddy%27s+Drop/_/Del+Fuego",
+                    "duration": "324",
+                    "@attr": {
+                        "rank": "9"
+                    },
+                    "streamable": {
+                        "#text": "0",
+                        "fulltrack": "0"
+                    },
+                    "artist": {
+                        "name": "Fat Freddy's Drop",
+                        "mbid": "d451395a-f768-432e-bb70-d38c32baf4cb",
+                        "url": "https://www.last.fm/music/Fat+Freddy%27s+Drop"
+                    }
+                },
+                {
+                    "name": "Hope",
+                    "url": "https://www.last.fm/music/Fat+Freddy%27s+Drop/_/Hope",
+                    "duration": "439",
+                    "@attr": {
+                        "rank": "10"
+                    },
+                    "streamable": {
+                        "#text": "0",
+                        "fulltrack": "0"
+                    },
+                    "artist": {
+                        "name": "Fat Freddy's Drop",
+                        "mbid": "d451395a-f768-432e-bb70-d38c32baf4cb",
+                        "url": "https://www.last.fm/music/Fat+Freddy%27s+Drop"
+                    }
+                }
+            ]
+        }
+    }
+}
+
+module.exports = ServicesMock
 
