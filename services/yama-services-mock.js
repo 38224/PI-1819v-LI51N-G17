@@ -45,22 +45,31 @@ class ServicesMock {
 	addMusicToPlaylist(playlistId,albumId,musicName, cb) { 
 	
 		let pl = playlists[playlistId]
-		let tracks = albums[albumId]
+		let ts = albums[albumId]
 		if(!pl)
 			return cb({ 'code': 404, 'message': 'playlist does not exist'})
-		if(!album)
+		if(!ts)
 			return cb({ 'code': 404, 'message': 'album does not exist'})
-		let music = tracks[musicName]
-		if(!music)
-			return cb({ 'code': 404, 'message': 'music does not exist'})
-		if(pl.musics[music.url])
-			return cb({ 'code': 409, 'message': 'music already inserted'})
 		
+		const idx = ts.tracks.track.findIndex(track => track.name == musicName)
+		if(idx < 0)
+			return cb({ 'code': 404, 'message': 'album does not contain that music'}, null)
+		const idx2 = pl.musics.findIndex(track => track.url == ts.tracks.track[idx].url)
+		if(idx2 >= 0)
+			return cb({ 'code': 409, 'message': 'music alredy inserted in playlist'}, null)
+		const music = {
+			'name': ts.tracks.track[idx].name,
+			'url':ts.tracks.track[idx].url,
+			'duration': dur,
+			'artist' :ts.tracks.track[idx].artist
+		}
+		const dur = parseInt(data.tracks.track[idx].duration)
+		pl.duration = pl.duration+dur // add the duration time of the song
 		pl.musics.push(music)
-		pl.duration = pl.duration + music.duration
 		playlists[playlistId] = pl
-		cb(null, { status: 'updated' })
+		cb(null, { status: 'updated' })	
 	}
+	
 	deleteMusicFromPlaylist(playlistId,musicName, cb) {
 		let pl = playlists[playlistId]
 		if(!pl)
@@ -68,12 +77,12 @@ class ServicesMock {
 		const idx = pl.musics.findIndex(track => track.name == musicName)
 		if(idx < 0)
 			return cb({ 'code': 400, 'message': 'playlist does not contain that music'})
-		 
+		  
 		const dur = pl.musics[idx].duration
-		pl.duration = pl.duration-dur // extract the duration time of the song removed 
-		pl.musics.splice(idx, 1) // removes 1 element at index idx 
+		pl.duration = parseInt(pl.duration-dur) // extract the duration time of the song removed
+		pl.musics.splice(idx, 1) // removes 1 element at index idx
 		playlists[playlistId] = pl 
-		cb(null, { 'status': 'deleted' })  
+		cb(null, { 'status': 'deleted' }) 
 	}
 }
 
