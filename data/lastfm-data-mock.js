@@ -15,6 +15,7 @@ class LastFMMock{
     }
 
     getAlbumsByMbid(mbid, cb) {
+		console.log(mbid)
 		if(!albums[mbid])
 			return cb({ 'code': 400, 'message': 'Invalid Mbid'}, null)
 		const albums = albums[mbid]
@@ -29,7 +30,7 @@ class LastFMMock{
 		const albumTracks = tracks[mbid]
 		if(!albumTracks)
 			return cb({ 'code': 404, 'message': 'track does not exist'})
-        cb(null, tracks)
+        cb(null, albumTracks.tracks.track)
     }
 }
 
@@ -63,8 +64,8 @@ const artists ={
         
 }
     
-const album = {
-   "d451395a-f768-432e-bb70-d38c32baf4cb": {
+const albums = {
+	"d451395a-f768-432e-bb70-d38c32baf4cb": {
 		"0b3d401e-aa43-3e84-9b9b-51e0b67bce8a":{
 			"name": "Based on a True Story",
 			"playcount": 2867723,

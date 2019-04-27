@@ -134,7 +134,7 @@ const artists ={
 	}   
 }
     
-const album =  {
+const albums =  {
    "d451395a-f768-432e-bb70-d38c32baf4cb": {
 		"0b3d401e-aa43-3e84-9b9b-51e0b67bce8a":{
 			"name": "Based on a True Story",
