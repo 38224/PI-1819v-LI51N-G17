@@ -1,0 +1,562 @@
+{
+	"info": {
+		"_postman_id": "76c99646-b2eb-4260-afc3-1693450b4810",
+		"name": "Yama-API",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "RESTART DB",
+			"item": [
+				{
+					"name": "RESET INDEX",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "14e24b55-fceb-4ec5-ab07-f82195b8afa5",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:9200/yama",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"yama"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE INDEX",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "c0e08a54-16fd-400a-90b7-f6491b56f2ac",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": ""
+						},
+						"url": {
+							"raw": "localhost:9200/yama",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"yama"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "getArtistsByName",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "fe43eead-51b6-4b33-ba82-812fcf29ca02",
+						"exec": [
+							"var jsonData = pm.response.json()[0].mbid;",
+							"pm.globals.set(\"artist_mbid\", jsonData);",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:3000/api/artists/{{artist_name}}",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"artists",
+						"{{artist_name}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getAlbumsByMbid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "7a49ad37-8e36-4f5d-8b4d-5199e880b4d7",
+						"exec": [
+							"var jsonData = pm.response.json()[0].mbid;",
+							"pm.globals.set(\"album_mbid\", jsonData);",
+							"",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:3000/api/artists/{{artist_mbid}}/albums",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"artists",
+						"{{artist_mbid}}",
+						"albums"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getTracksByMbid",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "db54f097-0552-41fb-8654-dcf64adeef78",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:3000/api/albums/{{album_mbid}}/tracks",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"albums",
+						"{{album_mbid}}",
+						"tracks"
+					],
+					"query": [
+						{
+							"key": "",
+							"value": ""
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "CreatePlaylist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "92541448-e2d3-4c60-bf16-b90c71100123",
+						"exec": [
+							"var jsonData =pm.response.json()._id;",
+							"pm.globals.set(\"playlist_id\", jsonData);",
+							"",
+							"pm.test(\"Status code is 201\", function () {",
+							"    pm.response.to.have.status(201);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"name\": \"g17 \",\n    \"description\": \"my list\"\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/yama/playlists",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"yama",
+						"playlists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getPlaylistInfo",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "2668fa97-bf47-4b15-874e-329525ae891c",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:3000/yama/playlists/{{playlist_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"yama",
+						"playlists",
+						"{{playlist_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "editPlaylist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "bb8da8d2-6ac7-4465-b023-c6c0a98dba1a",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"name\": \"lista999\",\n\t\"description\": \"minhalista999\"\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/yama/playlists/{{playlist_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"yama",
+						"playlists",
+						"{{playlist_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getPlaylists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a3cff322-76f5-4767-81d4-03af1d2d3dfe",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {},
+				"url": {
+					"raw": "localhost:3000/yama/playlists",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"yama",
+						"playlists"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addMusicToPlaylist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f77962d4-c377-4473-8438-01aba871ef97",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n{\n\tartistName: pm.globals.get(\"artist_name\"),\n\ttrackName:  pm.globals.get(\"music_name\")\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/yama/playlists/{{playlist_id}}/albums/{{album_mbid}}/musics/{{music_name}}",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"yama",
+						"playlists",
+						"{{playlist_id}}",
+						"albums",
+						"{{album_mbid}}",
+						"musics",
+						"{{music_name}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "addMusicToPlaylist Duplicate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "f77962d4-c377-4473-8438-01aba871ef97",
+						"exec": [
+							"pm.test(\"Status code is 409\", function () {",
+							"    pm.response.to.have.status(409);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"type": "text",
+						"value": "application/json"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "\n{\n\tartistName: pm.globals.get(\"artist_name\"),\n\ttrackName:  pm.globals.get(\"music_name\")\n}"
+				},
+				"url": {
+					"raw": "localhost:3000/yama/playlists/{{playlist_id}}/albums/{{album_mbid}}/musics/{{music_name}}",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"yama",
+						"playlists",
+						"{{playlist_id}}",
+						"albums",
+						"{{album_mbid}}",
+						"musics",
+						"{{music_name}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteMusicFromPlaylist",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "55a1908f-560c-4171-ae6f-ae9ad8217a8a",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:3000/yama/playlists/{{playlist_id}}/musics/{{music_name}}",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"yama",
+						"playlists",
+						"{{playlist_id}}",
+						"musics",
+						"{{music_name}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deleteMusicFromPlaylist Duplicate",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "b9022366-37dc-4dbe-ac11-d0571c6c2184",
+						"exec": [
+							"pm.test(\"Status code is 400\", function () {",
+							"    pm.response.to.have.status(400);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "localhost:3000/yama/playlists/{{playlist_id}}/musics/{{music_name}}",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"yama",
+						"playlists",
+						"{{playlist_id}}",
+						"musics",
+						"{{music_name}}"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

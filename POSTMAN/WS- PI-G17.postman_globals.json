@@ -1,0 +1,34 @@
+{
+	"id": "25431b16-df21-4ccd-81d8-808d7589ec12",
+	"values": [
+		{
+			"key": "artist_name",
+			"value": "Fat Freddy's Drop",
+			"enabled": true
+		},
+		{
+			"key": "artist_mbid",
+			"value": "d451395a-f768-432e-bb70-d38c32baf4cb",
+			"enabled": true
+		},
+		{
+			"key": "album_mbid",
+			"value": "0b3d401e-aa43-3e84-9b9b-51e0b67bce8a",
+			"enabled": true
+		},
+		{
+			"key": "playlist_id",
+			"value": "tNw8XmoBueIEm3l8VV25",
+			"enabled": true
+		},
+		{
+			"key": "music_name",
+			"value": "Ernie",
+			"enabled": true
+		}
+	],
+	"name": "WS- PI-G17 Globals",
+	"_postman_variable_scope": "globals",
+	"_postman_exported_at": "2019-04-27T10:10:29.908Z",
+	"_postman_exported_using": "Postman/7.0.9"
+}
