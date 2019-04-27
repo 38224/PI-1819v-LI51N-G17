@@ -63,6 +63,19 @@ class YamaDb {
 		)
 		//http://localhost:9200/yama/playlist/ocKQPWoBFqJyB8idQUxg
     }
+	deletePlaylist(playlistId,cb) {
+		request.delete(
+			{
+				uri:`${this.uri}/playlist/${playlistId}`,
+				headers: { 'content-type' : 'application/json' },
+				json: true
+			},
+			(err, res, body) => {
+        		handleResponse(err, res, 200, { 'status': 'deleted' }, cb)
+        	}
+		)
+		//http://localhost:9200/yama/playlist/ocKQPWoBFqJyB8idQUxg
+    }
 }
 function parsePlaylists(playlist) {
     let res = {
