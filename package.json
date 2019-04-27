@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/38224/PI-1819v-LI51N-G17#readme",
   "dependencies": {
+    "chai": "^4.2.0",
     "express": "^4.16.4",
     "request": "^2.88.0"
   }
