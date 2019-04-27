@@ -28,6 +28,9 @@ class Services {
 	getPlaylistInfo(id,cb) {
         this.yamaDb.getPlaylistInfo(id,cb)
 	}
+	deletePlaylist(playlistId,cb) {
+        this.yamaDb.deletePlaylist(playlistId,cb)
+	}
 	editPlaylist(playlistId,body,cb) {
 
 		this.yamaDb.getPlaylistInfo(playlistId,(err, p) => { 
@@ -48,7 +51,7 @@ class Services {
 		this.yamaDb.getPlaylistInfo(playlistId, (err, pl) => {
 			if(err)
 				return cb(err)
-			this.lastfmData.getTracksByMbid(albumId,(err, data) => {
+			this.lastfmData.getTracksByMbid(albumId,(err, data) => { 
 				if(err)
 					return cb(err)
 				const idx = data.tracks.track.findIndex(track => track.name == musicName)

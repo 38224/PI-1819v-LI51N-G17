@@ -13,6 +13,7 @@ module.exports = (app,yamaServices) => {
 	app.put("/yama/playlists/:playlistId", editPlaylist)
 	app.put("/yama/playlists/:playlistId/albums/:albumId/musics/:musicName",addMusicToPlaylist)
 	app.delete("/yama/playlists/:playlistId/musics/:musicName",deleteMusicFromPlaylist)
+	app.delete("/yama/playlists/:playlistId",deletePlaylist)
 	app.use(resourceNotFound)
 	return app
  
@@ -74,6 +75,12 @@ module.exports = (app,yamaServices) => {
 		let playlistId = req.params.playlistId	
 		let musicName = req.params.musicName	
 		yamaServices.deleteMusicFromPlaylist(playlistId,musicName,(err,data) => {
+			handleResponse(resp,200,err,data)
+		})
+	}
+	function deletePlaylist(req, resp){
+		let playlistId = req.params.playlistId		
+		yamaServices.deletePlaylist(playlistId,(err,data) => {
 			handleResponse(resp,200,err,data)
 		})
 	}

@@ -38,6 +38,13 @@ class YamaDbMock {
         cb(null, playlists[mbid])
 		
     }
+	deletePlaylist(playlistId, cb) {
+        const pl = playlists[idplaylist]
+        if(!pl)
+            return cb({ 'code': 404, 'message': 'Group does not exist'})
+        delete groups[playlistId]
+        cb(null, { 'status': 'deleted' })
+    }
 }
 
 module.exports = YamaDbMock
