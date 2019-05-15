@@ -1,6 +1,7 @@
 'use strict'
 
 const request = require('request')
+const rp = require('request-promise')
 
 class YamaDb {
 	
@@ -11,69 +12,84 @@ class YamaDb {
 	static init(es) {
 		return new YamaDb(es)
 	}
-	createPlaylist(playlist,cb) {  // cria grupo com {_id:xxx,name:nome,description:desc,musics:[]}
+	createPlaylist(playlist) {  // cria grupo com {_id:xxx,name:nome,description:desc,musics:[]}
 		playlist.musics = []
 		playlist.duration = 0
-		request.post(
-			{
+		
+		return rp.post({
 				uri:`${this.uri}/playlist`,
 				headers: { 'content-type' : 'application/json' },
 				json: true,
 				body: playlist
-			}, 
-            (err, res, body) => { 
-				handleResponse(err, res, 201, { 'status': 'created', '_id': body._id }, cb)
-			}
-		)
+			})
+			.catch(error => {
+			if(error.statusCode == 400)
+				return Promise.reject({'statusCode': 400, 'message': 'bad request'}) 
+			return Promise.reject({'statusCode': error.statusCode, 'message': 'unknown error'})				
+			})
+			.then(body => ({ 'status': 'created', '_id': body._id })) 
 	}
-	editPlaylist(playlistId,body,cb) {  // edita grupo com {_id:xxx,name:nome,description:desc,musics:[]}
-		request.put(
-		{
-				uri:`${this.uri}/playlist/${playlistId}`,  
-				body: body,
-				json: true
-			},
-			(err, res, body) => {
-				handleResponse(err, res, 200, { 'status': 'updated' }, cb)
-		}) 
-	}
-	getPlaylists(cb) {
-		request.get(
-			{
+	getPlaylists() {
+		return rp.get({
 				uri:`${this.uri}/playlist/_search`,
 				headers: { 'content-type' : 'application/json' },
 				json: true
-			},
-			(err, res, body) => {
-        		handleResponse(err, res, 200, body.hits.hits.map( p => parsePlaylists(p)), cb)
-        	}
-		)
-		//http://localhost:9200/yama/playlist/_search
+			})
+			.catch(error => {
+			if(error.statusCode == 400)
+				return Promise.reject({'statusCode': 400, 'message': 'bad request'})
+			if(error.statusCode == 404)
+				return Promise.reject({'statusCode': 404, 'message': 'not found'})
+			return Promise.reject({'statusCode': error.statusCode, 'message': 'unknown error'})						
+			})
+			.then( body => body.hits.hits.map( p => parsePlaylists(p)))
+  
     }
-	getPlaylistInfo(mbid,cb) {
-		request.get(
-			{
+	getPlaylistInfo(mbid) {
+		return rp.get({
 				uri:`${this.uri}/playlist/${mbid}`,
 				headers: { 'content-type' : 'application/json' },
 				json: true
-			},
-			(err, res, body) => {
-        		handleResponse(err, res, 200, parsePlaylists(body), cb)
-        	}
-		)
+			})
+			.catch(error => {
+			if(error.statusCode == 400)
+				return Promise.reject({'statusCode': 400, 'message': 'bad request'})
+			if(error.statusCode == 404)
+				return Promise.reject({'statusCode': 404, 'message': 'not found'})
+			return Promise.reject({'statusCode': error.statusCode, 'message': 'unknown error'})						
+			})
+			.then( body => parsePlaylists(body))
 		//http://localhost:9200/yama/playlist/ocKQPWoBFqJyB8idQUxg
     }
-	deletePlaylist(playlistId,cb) {
-		request.delete(
-			{
+	editPlaylist(playlistId,pl) {  // edita grupo com {_id:xxx,name:nome,description:desc,musics:[]}
+		return rp.put({
+				uri:`${this.uri}/playlist/${playlistId}`,  
+				body: pl,
+				json: true
+			})
+			.catch(error => {
+			if(error.statusCode == 400)
+				return Promise.reject({'statusCode': 400, 'message': 'bad request'})
+			if(error.statusCode == 404)
+				return Promise.reject({'statusCode': 404, 'message': 'not found'})
+			if(error.statusCode == 409)
+				return Promise.reject({'statusCode': 409, 'message': 'music already in playlist'})
+			return Promise.reject({'statusCode': error.statusCode, 'message': 'unknown error'})					
+			})
+			.then(body => ({ 'status': 'updated' }))
+	}
+	deletePlaylist(playlistId) {
+		return rp.delete({
 				uri:`${this.uri}/playlist/${playlistId}`,
 				headers: { 'content-type' : 'application/json' },
 				json: true
-			},
-			(err, res, body) => {
-        		handleResponse(err, res, 200, { 'status': 'deleted' }, cb)
-        	}
-		)
+			})
+			.catch(error => {
+			if(error.statusCode == 400)
+				return Promise.reject({'statusCode': 400, 'message': 'bad request'})
+			return Promise.reject({'statusCode': error.statusCode, 'message': 'unknown error'})						
+			})
+			.then(body => ({ 'status': 'deleted' }))
 		//http://localhost:9200/yama/playlist/ocKQPWoBFqJyB8idQUxg
     }
 }
@@ -87,17 +103,5 @@ function parsePlaylists(playlist) {
     }
     return res
 }
-function handleResponse(err, res, expectedStatusCode, body, cb, message){
-    if(err)
-        return cb(err, null) 
-    switch(res.statusCode){
-        case expectedStatusCode: 
-            cb(null, body); break
-        case 404: 
-            cb({ 'code': res.statusCode, 'message': 'Playlist does not exist' }, null); break
-        default: 
-            cb({ 'code': res.statusCode, 'message': message }, null); break
-    }
-}
- 
+
 module.exports = YamaDb

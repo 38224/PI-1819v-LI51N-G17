@@ -1,6 +1,8 @@
 'use strict'
 
 const request = require('request')
+const rp = require('request-promise')
+
 class LastFm {
 	 
 	constructor(api_info) {
@@ -12,49 +14,51 @@ class LastFm {
 		return new LastFm(api_info)
 	}
 	
-	getArtistsByName(name,cb) { 
-		get(cb,
-			{
+	getArtistsByName(name) { 
+	
+		return rp.get({
 				uri: `${this.yama_api}?method=artist.search&artist=${name}&api_key=${this.API_KEY}&format=json`,
 				json: true
-			},
-			(body) => {
-				if(body.errorCode == 400)
-					return {'code': 400, 'message': 'invalid artist' }
-				if(body.error == 404)
-					return {'code': 404, 'message': 'artist does not exist' }
-			},
-			(body) => body.results.artistmatches.artist.map(a => parseArtists(a)))
+		})
+		.catch(error => {
+			if(error.statusCode == 400)
+				return Promise.reject({'statusCode': 400, 'message': 'bad request'})
+			if(error.statusCode == 404)
+				return Promise.reject({'statusCode': 404, 'message': 'not found'})
+			return Promise.reject({'statusCode': error.statusCode, 'message': 'unknown error'})						
+		})
+		.then(body => body.results.artistmatches.artist.map(a => parseArtists(a)))
 	}
 	
-	getAlbumsByMbid(mbid,cb) { 
-		get(cb,
-			{
+	getAlbumsByMbid(mbid) { 
+	
+		return rp.get({
 				uri: `${this.yama_api}?method=artist.gettopalbums&mbid=${mbid}&api_key=${this.API_KEY}&format=json`,
 				json: true
-			},
-			(body) => {
-				if(body.errorCode == 400)
-					return {'code': 400, 'message': 'invalid album' }
-				if(body.error == 404)
-					return {'code': 404, 'message': 'album does not exist' }
-			},
-			(body) => body.topalbums.album.filter(album => album.mbid != null).map(a => parseAlbums(a)))
+			})
+			.catch(error => {
+				if(error.statusCode == 400)
+					return Promise.reject({'statusCode': 400, 'message': 'bad request'})
+				if(error.statusCode == 404)
+					return Promise.reject({'statusCode': 404, 'message': 'not found'})
+				return Promise.reject({'statusCode': error.statusCode, 'message': 'unknown error'})						
+			})
+			.then(body => body.topalbums.album.filter(album => album.mbid != null).map(a => parseAlbums(a)))
 	}
 	
-	getTracksByMbid(mbid,cb) { 
-		get(cb,
-			{
+	getTracksByMbid(mbid) {
+		return rp.get({
 				uri: `${this.yama_api}?method=album.getinfo&api_key=${this.API_KEY}&mbid=${mbid}&format=json`,
 				json: true
-			},
-			(body) => { 
-				if(body.errorCode == 400)
-					return {'code': 400, 'message': 'invalid tracks' }
-				if(body.error == 404)
-					return {'code': 404, 'message': 'tracks do not exist' }
-			},
-			(body) => parseTracks(body.album))  //.map(a => parseTracks(a)))
+			})
+			.catch(error => {
+				if(error.statusCode == 400)
+					return Promise.reject({'statusCode': 400, 'message': 'bad request'})
+				if(error.statusCode == 404)
+					return Promise.reject({'statusCode': 404, 'message': 'not found'})
+				return Promise.reject({'statusCode': error.statusCode, 'message': 'unknown error'})						
+			})
+			.then(body => parseTracks(body.album))
 	}
 }
 function parseArtists(artist) {
@@ -91,23 +95,6 @@ function parseTracks(album) {
 		//nao interessa as imagens nem tags?
     }
     return res
-}
-
-function get(cb, options, checkResponse, getBody) {
-    request.get(
-        options, 
-        (err, res, body) => {
-            if(err)
-                return cb(err)
-            let error
-            if((error = checkResponse(body)))
-                return cb(error, null)
-
-            res.statusCode == 200 ?
-            cb(null, getBody(body))
-                : cb({'code': body.errorCode, 'message': body.message }, null)
-        }
-    )
 }
  
 module.exports = LastFm
