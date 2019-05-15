@@ -42,29 +42,26 @@ class Services {
 	deletePlaylist(playlistId) {
         return this.yamaDb.deletePlaylist(playlistId)
 	}
-	addMusicToPlaylist(playlistId,albumId,musicName) { 
-	// SERÁ ASYNC e AWAIT com Promise.all([<funcoes>]), e retorna os valores dos promises 
-		return this.yamaDb.getPlaylistInfo(playlistId)
-		.then(pl => {
-			return this.lastfmData.getTracksByMbid(albumId)
-				.then(data => {
-					const idx = data.tracks.track.findIndex(track => track.name == musicName)
-					if(idx < 0)
-						return Promise.reject({ 'statusCode': 404, 'message': 'album does not contain that music'})
-					const idx2 = pl.musics.findIndex(track => track.url == data.tracks.track[idx].url)
-					if(idx2 >= 0)
-						return Promise.reject({ 'statusCode': 409, 'message': 'music alredy inserted in playlist'})
-					const dur = parseInt(data.tracks.track[idx].duration)
-					pl.duration = pl.duration+dur // add the duration time of the song 
-					// colocar uma musica apenas com a informacao que queremos
-					const music = {'name': data.tracks.track[idx].name,'url':data.tracks.track[idx].url,'duration': dur,'artist' :data.tracks.track[idx].artist}
-					pl.musics.push(music)
-					//tirar o _id porque 'Field [_id] is a metadata field and cannot be added inside a document.'
-					delete pl._id 
-					return this.yamaDb.editPlaylist(playlistId, pl)
-						.then(body=> Promise.resolve({ 'status': 'updated' }))
-				})
-		})
+	async addMusicToPlaylist(playlistId,albumId,musicName) { 
+		const [playlist, album] = await Promise.all([
+            this.yamaDb.getPlaylistInfo(playlistId),
+            this.lastfmData.getTracksByMbid(albumId)
+        ])
+		const idx = album.tracks.track.findIndex(track => track.name == musicName)
+		if(idx < 0)
+			return Promise.reject({ 'statusCode': 404, 'message': 'album does not contain that music'})
+		const idx2 = playlist.musics.findIndex(track => track.url == album.tracks.track[idx].url)
+		if(idx2 >= 0)
+			return Promise.reject({ 'statusCode': 409, 'message': 'music alredy inserted in playlist'})
+		const dur = parseInt(album.tracks.track[idx].duration)
+		playlist.duration = playlist.duration+dur // add the duration time of the song 
+		// colocar uma musica apenas com a informacao que queremos
+		const music = {'name': album.tracks.track[idx].name,'url':album.tracks.track[idx].url,'duration': dur,'artist' :album.tracks.track[idx].artist}
+		playlist.musics.push(music)
+		//tirar o _id porque 'Field [_id] is a metadata field and cannot be added inside a document.'
+		delete playlist._id 
+		return this.yamaDb.editPlaylist(playlistId, playlist)
+			.then(body=> Promise.resolve({ 'status': 'updated' }))
 	}
 	deleteMusicFromPlaylist(playlistId,musicName) {
 		return this.yamaDb.getPlaylistInfo(playlistId)
