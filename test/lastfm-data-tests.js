@@ -21,9 +21,10 @@ describe('LastFm - data Tests', () => {
                     assert.equal(data[0].mbid, "d451395a-f768-432e-bb70-d38c32baf4cb")
                     assert.equal(data[1].name, "Skream / Fat Freddy's Drop")
                     assert.equal(data[1].mbid, "")
-                    done()
+
                 }
             })
+        done()
     })
 
     it('should get a albums of an artist', done => {
@@ -35,9 +36,10 @@ describe('LastFm - data Tests', () => {
                 assert.equal(data[0].name, "Based on a True Story")
                 assert.equal(data[1].name, "Blackbird")
                 assert.equal(data[2].name, "Dr. Boondigga & The Big Bw")
-                done()
+
             }
         })
+        done();
     })
 
     it('should get tracks from an album', done => {
@@ -50,8 +52,9 @@ describe('LastFm - data Tests', () => {
                     assert.equal(data.tracks.track[0].duration, '437')
                     assert.equal(data.tracks.track[1].name, "Cay's Crays")
                     assert.equal(data.tracks.track[1].duration, '427')
-                    done()
+
                 }
             })
+        done()
     })
 })

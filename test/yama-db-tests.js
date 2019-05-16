@@ -46,11 +46,10 @@ describe('Yama-db Tests', () => {
                         .then(
                             (p) => {
                                 client.deletePlaylist(data._id)
-                                done()
                             })
-
                 }
             })
+        done()
     })
 
     it('delete a playlist', done => {
@@ -65,11 +64,12 @@ describe('Yama-db Tests', () => {
                         (data) => {
                             if (data) {
                                 expect(data).to.be.an('object').and.have.a.property('status', 'deleted')
-                                done()
+
                             }
                         })
                 }
             })
+        done()
     })
 
     it('update a playlist', done => {
@@ -90,12 +90,13 @@ describe('Yama-db Tests', () => {
                                         if (data) {
                                             expect(p).and.have.a.property('description', 'my list')
                                             client.deletePlaylist(_id).then((data) => { })
-                                            done()
+
                                         }
                                     })
                             }
                         })
                 }
             })
+        done()
     })
 })
