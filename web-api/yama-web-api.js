@@ -18,79 +18,98 @@ module.exports = (app, yamaServices) => {
 
 	function getArtistsByName(req, resp, next) {
 		let artistName = req.params.artistName
-		return yamaServices.getArtistsByName(artistName)
-			.catch(err => errorHandler(err, resp))
-			.then(artists => resp.json(artists))
-			.then(next)
+		return executor(
+			yamaServices.getArtistsByName(artistName),
+			resp,
+			next
+		)
 	}
 
 	function getAlbumsByMbid(req, resp, next) {
 		let artistId = req.params.artistId
-		return yamaServices.getAlbumsByMbid(artistId)
-			.catch(err => errorHandler(err, resp))
-			.then(albums => resp.json(albums))
-			.then(next)
+		return executor(
+			yamaServices.getAlbumsByMbid(artistId),
+			resp,
+			next
+		)
 	}
 
 	function getTracksByMbid(req, resp, next) {
 		let albumId = req.params.albumId
-		return yamaServices.getTracksByMbid(albumId)
-			.catch(err => errorHandler(err, resp))
-			.then(tracks => resp.json(tracks))
-			.then(next)
+		return executor(
+			yamaServices.getTracksByMbid(albumId),
+			resp,
+			next
+		)
 	}
 
 	function createPlaylist(req, resp, next) {
-		return yamaServices.createPlaylist(req.body)
-			.catch(err => errorHandler(err, resp))
-			.then(playlistInfo => resp.status(201).json(playlistInfo))
-			.then(next)
+		resp.status(201)
+		return executor(
+			yamaServices.createPlaylist(req.body),
+			resp,
+			next
+		)
+
 	}
 	function getPlaylists(req, resp, next) {
-		return yamaServices.getPlaylists()
-			.catch(err => errorHandler(err, resp))
-			.then(playlists => resp.json(playlists))
-			.then(next)
+		return executor(
+			yamaServices.getPlaylists(),
+			resp,
+			next
+		)
+
 	}
 	function getPlaylistInfo(req, resp, next) {
 		let playlistId = req.params.playlistId
-		return yamaServices.getPlaylistInfo(playlistId)
-			.catch(err => errorHandler(err, resp))
-			.then(playlistInfo => resp.json(playlistInfo))
-			.then(next)
-	}
-	function editPlaylist(req, resp, next) {
-		let playlistId = req.params.playlistId
-		return yamaServices.editPlaylist(playlistId, req.body)
-			.catch(err => errorHandler(err, resp))
-			.then(playlistInfo => { resp.json(playlistInfo) })
-			.then(next)
+		return executor(
+			yamaServices.getPlaylistInfo(playlistId),
+			resp,
+			next
+		)
 
 	}
+
+	function editPlaylist(req, resp, next) {
+		let playlistId = req.params.playlistId
+		return executor(
+			yamaServices.editPlaylist(playlistId, req.body),
+			resp,
+			next
+		)
+
+	}
+
 	function addMusicToPlaylist(req, resp, next) { //MISSING
 		let playlistId = req.params.playlistId
 		let albumId = req.params.albumId
 		let musicName = req.params.musicName
-		return yamaServices.addMusicToPlaylist(playlistId, albumId, musicName)
-			.catch(err => errorHandler(err, resp))
-			.then(musicInfo => resp.json(musicInfo))
-			.then(next)
+		return executor(
+			yamaServices.addMusicToPlaylist(playlistId, albumId, musicName),
+			resp,
+			next
+		)
 	}
+
 	function deleteMusicFromPlaylist(req, resp, next) {//MISSING
 		let playlistId = req.params.playlistId
 		let musicName = req.params.musicName
-		return yamaServices.deleteMusicFromPlaylist(playlistId, musicName)
-			.catch(err => errorHandler(err, resp))
-			.then(musicInfo => resp.json(musicInfo))
-			.then(next)
+		return executor(
+			yamaServices.deleteMusicFromPlaylist(playlistId, musicName),
+			resp,
+			next
+		)
 	}
+
 	function deletePlaylist(req, resp, next) {
 		let playlistId = req.params.playlistId
-		return yamaServices.deletePlaylist(playlistId)
-			.catch(err => errorHandler(err, resp))
-			.then(playlist => { resp.json(playlist) })
-			.then(next)
+		return executor(
+			yamaServices.deletePlaylist(playlistId),
+			resp,
+			next
+		)
 	}
+
 	function resourceNotFound(req, res, next) {
 		next({
 			'statusCode': 404,
@@ -100,6 +119,13 @@ module.exports = (app, yamaServices) => {
 
 	function errorHandler(err, resp) {
 		resp.status(err.statusCode).send(err)
+	}
+
+	function executor(promise, resp, next) {
+		return promise
+			.catch(err => errorHandler(err, resp))
+			.then(p => resp.json(p))
+			.then(next)
 	}
 }
 
