@@ -1,7 +1,6 @@
 <table class="table table-hover">
     <thead>
-    <tr>            
-		<th scope="col">Id</th>
+    <tr>             
         <th scope="col">Nome</th>
         <th scope="col">Descrição</th>
 		<th scope="col">Duração</th>
@@ -10,8 +9,7 @@
     <tbody>
         {{#each this}}
             <tr scope="row">
-                <td><a href="#playlists/{{_id}}">{{this._id}}</a></td>
-				<td>{{this.name}}</td>
+                <td><a href="#playlists/{{_id}}">{{this.name}}</a></td>
                 <td>{{this.description}}</td>
                 <td>{{this.duration}}</td>
             </tr>

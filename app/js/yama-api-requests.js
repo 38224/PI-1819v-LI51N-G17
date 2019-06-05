@@ -11,7 +11,7 @@ module.exports = {
 
 const baseAuthUrl = 'http://localhost:3000/api/auth'
 // talvez seja preciso usar para musics?
-const basePlaylistsUrl = 'http://localhost:3000/api/playlists'
+const basePlaylistsUrl = 'http://localhost:3000/yama/playlists'
 
 function signup(fullname, username, password){
     const options = {

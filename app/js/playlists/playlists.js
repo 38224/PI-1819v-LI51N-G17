@@ -3,8 +3,8 @@
 const util = require('../util')
 const yamaApi = require('../yama-api-requests.js')
 const Handlebars = require('./../../../node_modules/handlebars/dist/handlebars.js')
-const playlistsHB = require('./../../views/playlists/components/playlistsResults.hbs')
 const playlistsView = require('./../../views/playlists/playlists.html')
+const playlistsResults =  Handlebars.compile(require('./../../views/playlists/components/playlistsResults.hbs').default)
 
 module.exports = async (divMain) => {
         try {
@@ -20,7 +20,7 @@ module.exports = async (divMain) => {
 				const divPlaylistsResults = document.getElementById('divPlaylistsResults')
 				const playlists = await yamaApi.getAllPlaylists()
 				if(playlists.length != 0){
-					const playlistsResults =  Handlebars.compile(playlistsHB)
+					
 					divPlaylistsResults.innerHTML = playlistsResults(playlists)
 				}
 
