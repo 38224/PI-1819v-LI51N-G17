@@ -5,7 +5,8 @@ module.exports = {
     login,
     session,
     logout,
-    getAllPlaylists
+    getAllPlaylists,
+	getPlaylist
 }
 
 const baseAuthUrl = 'http://localhost:3000/api/auth'

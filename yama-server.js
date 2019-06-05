@@ -9,7 +9,7 @@ const webpackConfig = require('./webpack.config.js')
 const webpack = require('webpack')
 const webpackMiddleware = require('webpack-dev-middleware')
 const nconf = require('nconf') 
-//const expressSession = require('express-session')
+const expressSession = require('express-session')
 
 const port = 3000
 const api_info = {
@@ -35,7 +35,7 @@ console.log('Running ' + NODE_ENV)
  
 app.use(morgan('dev'))
 //app.use(bodyParser.json())
-//app.use(expressSession({ secret: 'keyboard cat', resave: false, saveUninitialized: true}))
+app.use(expressSession({ secret: 'keyboard cat', resave: false, saveUninitialized: true}))
 app.use(frontEndMiddleware(isDev))
 
 require('./web-api/yama-web-api')(app, yamaServices)
@@ -59,3 +59,4 @@ function frontEndMiddleware(isDev){
 //const yamaDb = require('./data/yama-db-mock').init(es)
 //const yamaServices = require('./services/yama-services-mock').init(lastfmData,yamaDb)
 //mocks end//
+ 
