@@ -6,7 +6,9 @@ const util = require('./util')
 const yamaApi = require('./yama-api-requests.js')
 const Handlebars = require('./../../node_modules/handlebars/dist/handlebars.js')
 const mainView = require('./../views/main.html')
-const navbarView = Handlebars.compile('./../views/navbar.hbs')
+const navbarHB = require('./../views/navbar.hbs')
+console.log(Handlebars)
+const navbarView = Handlebars.compile('adssd')
 
 const home = require('./home')
 const playlist = require('./playlists/playlist.js') 
@@ -19,8 +21,7 @@ const logout = require('./auth/logout')
 
 
 document.body.innerHTML = mainView
-const divMain = document.getElementById('divMain')
-alert(divMain.innerHTML)
+const divMain = document.getElementById('divMain') 
 const Router = require('./../../utils/router')
 const router = new Router()
 
@@ -45,6 +46,7 @@ showNavbar()
     })
 
 async function showNavbar() {
+
     document
         .getElementById('divNavbar')
         .innerHTML = navbarView()//await yamaApi.session())
