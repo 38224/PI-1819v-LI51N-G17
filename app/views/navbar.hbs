@@ -1,13 +1,38 @@
-<nav>
-    <ul class="nav nav-pills">
-        <li class="nav-item">
-            <a id="nav#home" class="nav-link" href="#home">Home</a>
-        </li>
-        <li class="nav-item">
-            <a id="nav#playlist" class="nav-link" href="#playlist">playlist</a>
-        </li>
-        <li class="nav-item">
-            <a id="nav#playlists" class="nav-link" href="#playlists">playlists</a>
-        </li>
-    </ul>
-</nav>
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="#">YET ANOTHER MUSIC APPLICATION</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+			<li class="nav-item">
+				<a id="nav#home" class="nav-link" href="#home">Home</a>
+			</li>
+			<li class="nav-item">
+				<a id="nav#playlist" class="nav-link" href="#playlist">playlist</a>
+			</li>
+			<li class="nav-item">
+				<a id="nav#playlists" class="nav-link" href="#playlists">playlists</a>
+			</li>
+			  {{#if auth}}
+				<li class="nav-item" id="liAuth">
+					  <a id="nav#logout" href="#logout" class="nav-link">Logout</a>
+				</li>
+			  {{else}}
+				<li class="nav-item" id="liAuth">
+					  <a id="nav#login" href="#login" class="nav-link">Log In</a>
+				</li>
+				<li class="nav-item" id="liAuth">
+					  <a id="nav#signup" href="#signup" class="nav-link">Sign Up</a>
+				</li>
+			  {{/if}}
+			  {{#if auth}}
+				<span class="navbar-text">
+						{{fullname}}
+				</span>
+			  {{/if}}
+        </ul>
+      </div>
+    </div>
+  </nav>

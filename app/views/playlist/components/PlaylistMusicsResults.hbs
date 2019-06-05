@@ -5,8 +5,8 @@
             <th scope="col">URL Name</th>
             <th scope="col">Duração</th>
             <th scope="col">Nome Artista</th>
-            <th scope="col">Nº Artista</th>
             <th scope="col">URL Artista</th> 
+			<th scope="col">Remover</th> 
         </tr>
         <tbody>
             {{#each .}}
@@ -14,9 +14,9 @@
                     <td>{{name}}</td>
                     <td>{{url}}</td>
                     <td>{{duration}}</td>
-                    <td>{{artist.name}}</td>
-                    <td>{{artist.mbid}}</td>
+					<td><a href="#artists/{{artist.name}}">{{artist.name}}</a></td>
 					<td>{{artist.url}}</td>
+					<td><button id="removeMusic_{{name}}">X</button></td>
                 </tr>
             {{/each}}
         </tbody>

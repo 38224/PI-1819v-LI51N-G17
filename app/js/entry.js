@@ -24,9 +24,9 @@ const router = new Router()
 //var Router = require('router')
 //const router = new Router()
 
-router.get('#home', () => home(divMain))
-router.get('#playlists/:playlistId', (p) => playlist(divMain,p.params.playlistId))
-router.get('#playlists', () => playlists(divMain))
+router.get('home', () => home(divMain))
+router.get('playlists/:playlistId', (p) => playlist(divMain,p.params.playlistId))
+router.get('playlists', () => playlists(divMain))
 /*
 router.get('#login', () => login(divMain, showNavbar))
 router.get('#signup', () => signup(divMain, showNavbar))

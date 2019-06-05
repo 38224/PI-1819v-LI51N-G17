@@ -6,7 +6,8 @@ module.exports = {
     session,
     logout,
     getAllPlaylists,
-	getPlaylist
+	getPlaylist,
+	deleteMusicFromPlaylist
 }
 
 const baseAuthUrl = 'http://localhost:3000/api/auth'
@@ -57,6 +58,11 @@ function getAllPlaylists() {
 function getPlaylist(id) {
     return fetchJSON(`${basePlaylistsUrl}/${id}`)
 }
+function deleteMusicFromPlaylist(playlistId,musicName) {
+	
+	return fetchJSON(`${basePlaylistsUrl}/${playlistId}/musics/${musicName}`, { method: 'DELETE' })
+}
+
 /*
 function createPlaylist(name, description) {
 	

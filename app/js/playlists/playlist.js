@@ -8,9 +8,8 @@ const musicsResults = Handlebars.compile(require('./../../views/playlist/compone
 const playlistView = require('./../../views/playlist/playlist.html')
 //const editPlaylist = Handlebars.compile(require('./../../views/playlist/components/editPlaylist.hbs'))
 
-module.exports = async (divMain, mbid) => {
+module.exports = async (divMain, playlistId) => {
         try {
-			console.log("entrou2")
 			/*
                 const session = await yamaApi.session()
                 if(!session.auth) {
@@ -19,15 +18,23 @@ module.exports = async (divMain, mbid) => {
                 else {
 			*/
 			divMain.innerHTML = playlistView
-			const playlist = await yamaApi.getPlaylist(mbid) 
+			const playlist = await yamaApi.getPlaylist(playlistId) 
 			if(playlist.musics.length != 0){
 				
 				document
 						.getElementById('divMusicsResults')
 						.innerHTML = musicsResults(playlist.musics)
+				playlist.musics.forEach(function(element) {
+				
+				document.querySelector("#removeMusic_"+element.name).addEventListener("click", function() {
+						yamaApi.deleteMusicFromPlaylist(playlistId,element.name)
+					})
+				})
 			}
                 
         } catch(err) {
                 util.showAlert(JSON.stringify(err))
         }
+		
+		
 }
