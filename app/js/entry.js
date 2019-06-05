@@ -4,9 +4,9 @@ require('./../../node_modules/bootstrap/dist/css/bootstrap.css')
 require('./../../node_modules/bootstrap/dist/js/bootstrap.js')
 const util = require('./util')
 const yamaApi = require('./yama-api-requests.js')
-const Handlebars = require('handlebars/dist/handlebars')
+const Handlebars = require('./../../node_modules/handlebars/dist/handlebars.js')
 const mainView = require('./../views/main.html')
-const navbarView = Handlebars.compile(require('./../views/navbar.hbs'))
+const navbarView = Handlebars.compile('./../views/navbar.hbs')
 
 const home = require('./home')
 const playlist = require('./playlists/playlist.js') 
@@ -25,10 +25,9 @@ const Router = require('./../../utils/router')
 const router = new Router()
 
 router.get('#home', () => home(divMain))
-/*
 router.get('#playlist', () => playlist(showNavbar))
 router.get('#playlists', () => playlists(showNavbar))
-
+/*
 router.get('#login', () => login(divMain, showNavbar))
 router.get('#signup', () => signup(divMain, showNavbar))
 router.get('#logout', () => logout(showNavbar)) 
@@ -48,7 +47,7 @@ showNavbar()
 async function showNavbar() {
     document
         .getElementById('divNavbar')
-        .innerHTML = navbarView(await yamaApi.session())
+        .innerHTML = navbarView()//await yamaApi.session())
 }
 
 function showView() {

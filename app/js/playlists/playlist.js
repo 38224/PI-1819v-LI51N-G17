@@ -3,7 +3,7 @@
 const util = require('../util')
 const yamaApi = require('../yama-api-requests.js')
 const Handlebars = require('./../../../node_modules/handlebars/dist/handlebars.js')
-const musicsResults = Handlebars.compile(require('./../../views/playlist/components/PlaylistMusicsResults.hbs'))
+const musicsResults = Handlebars.compile('./../../views/playlist/components/PlaylistMusicsResults.hbs')
 const playlistView = require('./../../views/playlist/playlist.html')
 //const editPlaylist = Handlebars.compile(require('./../../views/playlist/components/editPlaylist.hbs'))
 
