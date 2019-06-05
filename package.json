@@ -17,10 +17,24 @@
   },
   "homepage": "https://github.com/38224/PI-1819v-LI51N-G17#readme",
   "dependencies": {
+    "bootstrap": "^4.3.1",
     "chai": "^4.2.0",
+    "css-loader": "^2.1.1",
     "express": "^4.16.4",
+    "express-session": "^1.16.1",
+    "handlebars": "^4.1.2",
+    "html-loader": "^0.5.5",
+    "html-webpack-plugin": "^3.2.0",
+    "jquery": "^3.4.1",
     "mocha": "^6.1.4",
+    "morgan": "^1.9.1",
+    "nconf": "^0.10.0",
+    "popper.js": "^1.15.0",
+    "raw-loader": "^3.0.0",
     "request": "^2.88.0",
-    "request-promise": "^4.2.4"
+    "request-promise": "^4.2.4",
+    "style-loader": "^0.23.1",
+    "webpack": "^4.33.0",
+    "webpack-dev-middleware": "^3.7.0"
   }
 }

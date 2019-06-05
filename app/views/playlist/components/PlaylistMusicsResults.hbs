@@ -1,0 +1,49 @@
+<table class="table table-hover">
+    <thead>
+        <tr>    
+            <th scope="col">Name</th>
+            <th scope="col">Short Name</th>
+            <th scope="col">TLA</th>
+            <th scope="col">Address</th>
+            <th scope="col">Phone</th>
+            <th scope="col">Website</th>
+            <th scope="col">E-mail</th>
+            <th scope="col">Founded in</th>
+            <th scope="col">Club colors</th>
+            <th scope="col">Venue</th>
+			<th scope="col"></th>  
+        </tr>
+        <tbody>
+            {{#each .}}
+                <tr scope="row">
+                    <td><strong>{{name}}</strong></td>
+                    <td>{{shortName}}</td>
+                    <td>{{tla}}</td>
+                    <td>{{address}}</td>
+                    <td>{{phone}}</td>
+                    <td><a href={{website}}>{{website}}</a></td>
+                    <td>{{email}}</td>
+                    <td>{{founded}}</td>
+                    <td>{{clubColors}}</td>
+                    <td>{{venue}}</td>
+                    <td><a href="#" name = "removeLink" value= {{id}}>Remove from Group</button></td>
+                </tr>
+            {{/each}}
+        </tbody>
+    </thead>
+</table>
+
+{{#each this}}
+	<tr>
+		<td>{{id}}</td>
+		<td>{{name}}</td>
+		<td>{{description}}</td>
+		<td>
+		{{#with this.teams}}
+			{{#each this}}
+				id:	{{id}} | nome:	{{name}} | fundação:	{{founded}}<br>
+			{{/each}}
+		{{/with}}
+		</td>
+	</tr>	
+{{/each}}
