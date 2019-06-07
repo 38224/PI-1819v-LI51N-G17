@@ -8,6 +8,7 @@ module.exports = {
 	getAlbumMusics,
     getAllPlaylists,
 	getPlaylist,
+	addMusicToPlaylist,
 	deleteMusicFromPlaylist,
 	createPlaylist,
 	editPlaylist
@@ -61,11 +62,7 @@ function getAllPlaylists() {
 function getPlaylist(id) {
     return fetchJSON(`${basePlaylistsUrl}/${id}`)
 }
-function deleteMusicFromPlaylist(playlistId,musicName) {
-	
-	return fetchJSON(`${basePlaylistsUrl}/${playlistId}/musics/${musicName}`, { method: 'DELETE' })
-}
- 
+  
 function createPlaylist(name, description) {
 	
     const options = {
@@ -91,6 +88,22 @@ function editPlaylist(playlistId, name, description) {
     return fetchJSON(`${basePlaylistsUrl}/${playlistId}`, options)
 }
 
+function addMusicToPlaylist(playlistId, albumMbid, musicName) {
+    const options = {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' }
+    }
+    return fetchJSON(`${basePlaylistsUrl}/${playlistId}/albums/${albumMbid}/musics/${musicName}`, options)
+}
+
+function deleteMusicFromPlaylist(playlistId,musicName) {
+    const options = {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+    }
+    return fetchJSON(`${basePlaylistsUrl}/${playlistId}/musics/${musicName}`, options)
+}
+ 
 async function fetchJSON(url, options = { method: 'GET', credentials: 'same-origin' }) {
     const resp = await fetch(url, options)
     const body = await resp.json()

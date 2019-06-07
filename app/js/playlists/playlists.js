@@ -51,6 +51,22 @@ module.exports = async (divMain) => {
 						const playlists = await yamaApi.editPlaylist(playlistIdInput.value,playlistNameInput.value,playlistDescription.value)
 						alert("lista alterada")
 					})
+				document.getElementById('buttonInsertMusic')
+					.addEventListener('click', async ev => {
+						ev.preventDefault() 
+						if(!playlistIdInput.value || !albumIdInput.value || !musicNameInput.value)
+							return util.showAlert('preencha todos os parametro', 'createPlaylistAlert', 'warning')
+						const playlists = await yamaApi.addMusicToPlaylist(playlistIdInput.value,albumIdInput.value,musicNameInput.value)
+						alert("musica inserida")
+					})
+				document.getElementById('buttonRemoveMusic')
+					.addEventListener('click', async ev => {
+						ev.preventDefault() 
+						if(!playlistIdInput.value || !musicNameInput.value)
+							return util.showAlert('preencha todos os parametro', 'createPlaylistAlert', 'warning')
+						const playlists = await yamaApi.deleteMusicFromPlaylist(playlistIdInput.value,musicNameInput.value)
+						alert("música removida")
+					})
 				 
         } catch(err) {
                 util.showAlert(JSON.stringify(err))

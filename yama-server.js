@@ -9,7 +9,7 @@ const webpackConfig = require('./webpack.config.js')
 const webpack = require('webpack')
 const webpackMiddleware = require('webpack-dev-middleware')
 const nconf = require('nconf') 
-const expressSession = require('express-session')
+const expressSession = require('express-session') 
 const yamaWebApi = require('./web-api/yama-web-api')
 const port = 3000
 
@@ -49,8 +49,7 @@ const isDev = NODE_ENV == 'development'
 console.log('Running ' + NODE_ENV)
  
 app.use(morgan('dev'))
-//app.use(bodyParser.json())
-const passport = require('passport')
+//app.use(bodyParser.json()) 
 
 app.use(expressSession({ secret: 'keyboard cat', resave: false, saveUninitialized: true}))
 app.use(frontEndMiddleware(isDev))
