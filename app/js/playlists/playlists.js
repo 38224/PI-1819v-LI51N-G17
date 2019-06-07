@@ -16,8 +16,16 @@ module.exports = async (divMain) => {
                 else {
 					
 				*/
+				
 				divMain.innerHTML = playlistsView
 				const divPlaylistsResults = document.getElementById('divPlaylistsResults')
+				// input fields-----------------------------------------
+				const playlistNameInput = document.getElementById('playlistName')
+				const playlistDescriptionInput = document.getElementById('playlistDescription')
+				const playlistIdInput = document.getElementById('playlistId')
+				const albumIdInput = document.getElementById('albumId')
+				const musicNameInput = document.getElementById('musicName')
+				// add listeners ---------------------------------------
 				document.getElementById('buttonSearch')
 					.addEventListener('click', async ev => {
 						ev.preventDefault()
@@ -27,7 +35,23 @@ module.exports = async (divMain) => {
 							divPlaylistsResults.innerHTML = playlistsResults(playlists)
 						}
 					})
-				 
+				//-------------------------------------
+				document.getElementById('buttonCreatePlaylist')
+				.addEventListener('click', async ev => {
+					ev.preventDefault()
+					if(!playlistNameInput.value || !inputDescription.value)
+						return util.showAlert('All camps must be filled', 'createGroupAlert', 'warning')
+					const playlists = await yamaApi.getAllPlaylists()
+					if(playlists.length != 0){
+						
+						divPlaylistsResults.innerHTML = playlistsResults(playlists)
+					}
+				}) 
+					
+					const res = await focaApi.createGroup(inputName.value, inputDescription.value)
+					window.location.hash = `#groups/${res._id}`
+						})
+
 
 				/*
 				const inputName = document.getElementById('inputPlaylistName')
