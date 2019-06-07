@@ -5,6 +5,7 @@ module.exports = {
     login,
     session,
     logout,
+	getAlbumMusics,
     getAllPlaylists,
 	getPlaylist,
 	deleteMusicFromPlaylist

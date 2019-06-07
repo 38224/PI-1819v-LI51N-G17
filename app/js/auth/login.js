@@ -18,6 +18,7 @@ module.exports = async (divMain, getAuthAndInsertNavbar) => {
                 .getElementById('buttonLogin')
                 .addEventListener('click', ev => {
                     ev.preventDefault()
+					alert("a fazer login..")
                     if(!inputUsername.value || !inputPassword.value) 
                         return util.showAlert('preencha todos os campos')
                     yamaApi

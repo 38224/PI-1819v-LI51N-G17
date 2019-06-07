@@ -1,3 +1,43 @@
-<h2>Playlists</h2>
-<div id="divAlerts"></div>
-<div id="divPlaylistsResults"></div>
+<center>
+	<h2>Playlists
+	</h2>
+</center>
+<form>
+  <div class="form row">
+        <div class="form-group col-md-3">
+             <label for="playlistId">playlistId:</label>
+             <input type="text" class="form-control" placeholder="Id da lista" name="playlistId" id="playlistId">
+        </div>
+        <div class="form-group col-md-3">
+             <label for="albumId">albumId:</label>
+             <input type="text" class="form-control" placeholder="Id do albúm" name="albumId" id="albumId">
+        </div>
+        <div class="form-group col-md-3">
+            <label for="teamId">musicName:</label>
+            <input type="text" class="form-control" placeholder="nome da música" name="musicName" id="musicName">
+       </div>
+    </div>
+    <div class="form row">
+        <div class="form-group col-md-2">
+            <label for="playlistName">Nome da lista:</label>
+            <input type="text" class="form-control" placeholder="Nome da lista" name="playlistName" id="playlistName">
+       </div>
+          <div class="form-group col-md-2">
+            <label for="musicName">Descrição:</label>
+            <input type="text" class="form-control" placeholder="Descrição do lista" name="Listdescription" id="Listdescription">
+        </div>
+    </div>
+    <div class="form-group row">
+        <div class="col-sm-10">
+            <button type="submit" class="btn btn-primary" id="buttonSearch">Procurar</button>
+            <button type="submit" class="btn btn-primary" id="buttonCreatePlaylist">Criar lista</button>
+            <button type="submit" class="btn btn-primary" id="buttonEditPlaylist">Editar lista</button>
+            <button type="submit" class="btn btn-primary" id="buttonInsertMusic">Inserir música numa lista</button>
+            <button type="submit" class="btn btn-primary" id="buttonRemoveMusic">Remover música numa lista</button>
+        </div>
+    </div>
+</form>
+<div class="card">
+    <div class="card-body" id="divPlaylistsResults" >
+    </div>
+</div> 

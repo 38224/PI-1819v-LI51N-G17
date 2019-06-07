@@ -18,11 +18,16 @@ module.exports = async (divMain) => {
 				*/
 				divMain.innerHTML = playlistsView
 				const divPlaylistsResults = document.getElementById('divPlaylistsResults')
-				const playlists = await yamaApi.getAllPlaylists()
-				if(playlists.length != 0){
-					
-					divPlaylistsResults.innerHTML = playlistsResults(playlists)
-				}
+				document.getElementById('buttonSearch')
+					.addEventListener('click', async ev => {
+						ev.preventDefault()
+						const playlists = await yamaApi.getAllPlaylists()
+						if(playlists.length != 0){
+							
+							divPlaylistsResults.innerHTML = playlistsResults(playlists)
+						}
+					})
+				 
 
 				/*
 				const inputName = document.getElementById('inputPlaylistName')

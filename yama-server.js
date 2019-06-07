@@ -14,7 +14,7 @@ const yamaWebApi = require('./web-api/yama-web-api')
 const port = 3000
 
 // AUTH SECTION  /// FAZER AUTH-WEB-API,USERS-DB,AUTH-SERVICES
-/*
+
 const authWebApi = require('./web-api/auth-web-api')
 const esAuth = {
     'host': 'localhost',
@@ -23,7 +23,7 @@ const esAuth = {
 }
 const usersDB = require('./data/user-db').init(esAuth)
 const authService = require('./services/auth-services').init(usersDB)
-*/
+
 // AUTH SECTION END
 
 
@@ -50,7 +50,9 @@ console.log('Running ' + NODE_ENV)
  
 app.use(morgan('dev'))
 //app.use(bodyParser.json())
-app.use(expressSession({ secret: 'keyboard cat', resave: false, saveUninitialized: true}))
+const passport = require('passport')
+
+//app.use(expressSession({ secret: 'keyboard cat', resave: false, saveUninitialized: true}))
 app.use(frontEndMiddleware(isDev))
 
 yamaWebApi(app, yamaServices)

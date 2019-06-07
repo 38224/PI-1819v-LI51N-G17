@@ -1,18 +1,18 @@
 'use strict'
 
-const passport = require('passport')
+const passport = require('passport') 
 
 module.exports = (app, authService) => {
 
+    app.use(passport.initialize())
+    app.use(passport.session())
+	
     passport.serializeUser((user, done) => done(null, user._id))
     passport.deserializeUser((userId, done) => authService
         .getUser(userId)
         .then(user => done(null, user))
         .catch(err => done(err))
     )
-    app.use(passport.initialize())
-    app.use(passport.session())
-
     app.get('/api/auth/session', getSession)
     app.post('/api/auth/login', login)
     app.post('/api/auth/logout', logout)

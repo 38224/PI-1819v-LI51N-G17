@@ -9,11 +9,11 @@ const mainView = require('./../views/main.html')
 const navbarView = Handlebars.compile(require('./../views/navbar.hbs').default)
 
 const home = require('./home')
-const playlist = require('./playlists/playlist.js')
+//const playlist = require('./playlists/playlist.js')
 const playlists = require('./playlists/playlists.js')
-const login = require('./auth/login')
-const signup = require('./auth/signup')
-const logout = require('./auth/logout')
+const login = require('./auth/login.js')
+const signup = require('./auth/signup.js')
+const logout = require('./auth/logout.js')
 
 
 document.body.innerHTML = mainView
@@ -24,7 +24,7 @@ const router = new Router()
 //const router = new Router()
 
 router.get('home', () => home(divMain))
-router.get('playlists/:playlistId', (p) => playlist(divMain,p.params.playlistId))
+//router.get('playlists/:playlistId', (p) => playlist(divMain,p.params.playlistId))
 router.get('playlists', () => playlists(divMain))
 router.get('#login', () => login(divMain, showNavbar))
 router.get('#signup', () => signup(divMain, showNavbar))
