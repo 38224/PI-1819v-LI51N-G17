@@ -37,21 +37,13 @@ module.exports = async (divMain) => {
 					})
 				//-------------------------------------
 				document.getElementById('buttonCreatePlaylist')
-				.addEventListener('click', async ev => {
-					ev.preventDefault()
-					if(!playlistNameInput.value || !inputDescription.value)
-						return util.showAlert('All camps must be filled', 'createGroupAlert', 'warning')
-					const playlists = await yamaApi.getAllPlaylists()
-					if(playlists.length != 0){
-						
-						divPlaylistsResults.innerHTML = playlistsResults(playlists)
-					}
-				}) 
-					
-					const res = await focaApi.createGroup(inputName.value, inputDescription.value)
-					window.location.hash = `#groups/${res._id}`
-						})
-
+					.addEventListener('click', async ev => {
+						ev.preventDefault()
+						if(!playlistIdInput.value || !playlistNameInput.value || !playlistDescriptionInput.value)
+							return util.showAlert('All camps must be filled', 'createGroupAlert', 'warning')
+						const res = await yamaApi.editPlaylist(playlistIdInput.value,playlistNameInput.value, playlistDescriptionInput.value)
+						alert('Lista criada')
+					})
 
 				/*
 				const inputName = document.getElementById('inputPlaylistName')
