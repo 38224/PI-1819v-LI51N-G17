@@ -10,8 +10,23 @@ const webpack = require('webpack')
 const webpackMiddleware = require('webpack-dev-middleware')
 const nconf = require('nconf') 
 const expressSession = require('express-session')
-
+const yamaWebApi = require('./web-api/yama-web-api')
 const port = 3000
+
+// AUTH SECTION  /// FAZER AUTH-WEB-API,USERS-DB,AUTH-SERVICES
+/*
+const authWebApi = require('./web-api/auth-web-api')
+const esAuth = {
+    'host': 'localhost',
+    'port': 9200,
+    'index': 'users/user'
+}
+const usersDB = require('./data/user-db').init(esAuth)
+const authService = require('./services/auth-services').init(usersDB)
+*/
+// AUTH SECTION END
+
+
 const api_info = {
 	'API_KEY': 'f72aedc9562cd94f698840409f292395',
 	'yama_api': 'http://ws.audioscrobbler.com/2.0/',
@@ -38,7 +53,8 @@ app.use(morgan('dev'))
 app.use(expressSession({ secret: 'keyboard cat', resave: false, saveUninitialized: true}))
 app.use(frontEndMiddleware(isDev))
 
-require('./web-api/yama-web-api')(app, yamaServices)
+yamaWebApi(app, yamaServices)
+//authWebApi(app, authService)
 
 http
     .createServer(app)
