@@ -52,7 +52,7 @@ app.use(morgan('dev'))
 //app.use(bodyParser.json())
 const passport = require('passport')
 
-//app.use(expressSession({ secret: 'keyboard cat', resave: false, saveUninitialized: true}))
+app.use(expressSession({ secret: 'keyboard cat', resave: false, saveUninitialized: true}))
 app.use(frontEndMiddleware(isDev))
 
 yamaWebApi(app, yamaServices)

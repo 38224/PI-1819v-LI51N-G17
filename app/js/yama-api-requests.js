@@ -88,7 +88,7 @@ function editPlaylist(playlistId, name, description) {
         }),
         headers: { 'Content-Type': 'application/json' }
     }
-    return fetchJSON(`${baseGroupsUrl}/${playlistId}`, options)
+    return fetchJSON(`${basePlaylistsUrl}/${playlistId}`, options)
 }
 
 async function fetchJSON(url, options = { method: 'GET', credentials: 'same-origin' }) {

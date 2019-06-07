@@ -34,16 +34,22 @@ module.exports = async (divMain) => {
 							
 							divPlaylistsResults.innerHTML = playlistsResults(playlists)
 						}
-					})
-				//------------------------------------- 
+					}) 
 				document.getElementById('buttonCreatePlaylist')
 					.addEventListener('click', async ev => {
-						ev.preventDefault()
-						console.log("a criar")
+						ev.preventDefault() 
 						if(!playlistNameInput.value || !playlistDescription.value)
 							return util.showAlert('preencha todos os parametro', 'createPlaylistAlert', 'warning')
 						const playlists = await yamaApi.createPlaylist(playlistNameInput.value,playlistDescription.value)
 						alert("lista creada")
+					})
+				document.getElementById('buttonEditPlaylist')
+					.addEventListener('click', async ev => {
+						ev.preventDefault() 
+						if(!playlistIdInput.value || !playlistNameInput.value || !playlistDescription.value)
+							return util.showAlert('preencha todos os parametro', 'createPlaylistAlert', 'warning')
+						const playlists = await yamaApi.editPlaylist(playlistIdInput.value,playlistNameInput.value,playlistDescription.value)
+						alert("lista alterada")
 					})
 				 
         } catch(err) {
