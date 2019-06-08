@@ -6,11 +6,11 @@
             <th scope="col">URL</th>
         </tr>
         <tbody>
-            {{#each this}}
+            {{#each this.tracks.track}}
                 <tr scope="row">
-					<td>{{this.tracks.track.name}}</a></td>
-                    <td>{{this.tracks.track.duration}}</td>
-                    <td>{{this.tracks.track.url}}</td>
+					<td>{{name}}</a></td>
+                    <td>{{duration}}</td>
+                    <td><a href="{{url}}">{{url}}</a></td>
                 </tr>
             {{/each}}
         </tbody>
