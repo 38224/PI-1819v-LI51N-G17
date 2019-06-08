@@ -1,16 +1,16 @@
 'use strict'
 
-const bodyParser = require('body-parser').json()
+//const bodyParser = require('body-parser').json()
 
 module.exports = (app, yamaServices) => {
 
 	app.get('/api/artists/:artistName', getArtistsByName)
 	app.get('/api/artists/:artistId/albums', getAlbumsByMbid)
 	app.get('/api/albums/:albumId/tracks', getTracksByMbid)
-	app.post("/yama/playlists", bodyParser, createPlaylist)
+	app.post("/yama/playlists", createPlaylist)
 	app.get("/yama/playlists", getPlaylists)
 	app.get("/yama/playlists/:playlistId", getPlaylistInfo)
-	app.put("/yama/playlists/:playlistId", bodyParser, editPlaylist)
+	app.put("/yama/playlists/:playlistId", editPlaylist)
 	app.put("/yama/playlists/:playlistId/albums/:albumId/musics/:musicName", addMusicToPlaylist)
 	app.delete("/yama/playlists/:playlistId/musics/:musicName", deleteMusicFromPlaylist)
 	app.delete("/yama/playlists/:playlistId", deletePlaylist)
@@ -84,6 +84,7 @@ module.exports = (app, yamaServices) => {
 		let playlistId = req.params.playlistId
 		let albumId = req.params.albumId
 		let musicName = req.params.musicName
+		
 		return executor(
 			yamaServices.addMusicToPlaylist(playlistId, albumId, musicName),
 			resp,

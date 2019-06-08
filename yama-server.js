@@ -1,10 +1,9 @@
 'use strict'
 
-//const bodyParser = require('body-parser')
+const bodyParser = require('body-parser')
 const http = require('http')
 const morgan = require('morgan')
 const express = require('express')
-const app = express()
 const webpackConfig = require('./webpack.config.js')
 const webpack = require('webpack')
 const webpackMiddleware = require('webpack-dev-middleware')
@@ -47,23 +46,18 @@ nconf
 const NODE_ENV = nconf.get('NODE_ENV')
 const isDev = NODE_ENV == 'development'
 console.log('Running ' + NODE_ENV)
- 
-app.use(morgan('dev'))
-//app.use(bodyParser.json()) 
 
+const app = express()
+app.use(bodyParser.json()) 
+app.use(morgan('dev'))
 app.use(expressSession({ secret: 'keyboard cat', resave: false, saveUninitialized: true}))
 app.use(frontEndMiddleware(isDev))
-
 yamaWebApi(app, yamaServices)
-//authWebApi(app, authService)
+authWebApi(app, authService)
 
 http
     .createServer(app)
-    .listen(port, (e) => {
-	if (e)
-		return console.log(e)
-	console.log('HTTP Server running on port ' + port)
-})
+    .listen(port, () => console.log('HTTP Server running on port ' + port))
 
 function frontEndMiddleware(isDev){
     return isDev
