@@ -2,12 +2,12 @@
 
 const util = require('../util.js')
 const yamaApi = require('../yama-api-requests.js')
-const loginView = require('./../../views/login.html')
+const loginView = require('./../../views/auth/login.html')
 
 module.exports = async (divMain, getAuthAndInsertNavbar) => {
     try {
         const session = await yamaApi.session()
-        if(session.auth) {
+        if(session && session.auth) {
             window.location.hash = '#home'
         }
         else {
@@ -27,8 +27,9 @@ module.exports = async (divMain, getAuthAndInsertNavbar) => {
                         .then(() => window.location.hash = '#playlists')
                         .catch(err => util.showAlert("credenciais erradas"))
                 })
-        }
+		}
     } catch(err) {
+		alert(err)
         util.showAlert(JSON.stringify(err))
     }
 }

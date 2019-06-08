@@ -2,15 +2,17 @@
 
 const util = require('../util.js')
 const yamaApi = require('../yama-api-requests.js')
-const signupView = require('./../../views/signup.html')
+const signupView = require('./../../views/auth/signup.html')
 
 module.exports = async (divMain, getAuthAndInsertNavbar) => {
     try {
+		
         const session = await yamaApi.session()
-        if(session.auth) {
+        if(session && session.auth) {
             window.location.hash = '#home'
         }
         else {
+			
             divMain.innerHTML = signupView
             const inputFullname = document.getElementById('inputFullname')
             const inputUsername = document.getElementById('inputUsername')
@@ -27,7 +29,9 @@ module.exports = async (divMain, getAuthAndInsertNavbar) => {
                         .then(() => window.location.hash = '#playlists')
                         .catch(err => util.showAlert(err.message))
                 })
+				
         }
+		
     } catch(err) {
         util.showAlert(JSON.stringify(err))
     }
