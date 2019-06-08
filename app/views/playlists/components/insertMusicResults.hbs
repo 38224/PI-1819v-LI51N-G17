@@ -1,0 +1,21 @@
+<table class="table table-hover">
+    <thead>
+    <tr>             
+        <th scope="col">Nome</th>
+        <th scope="col">Descrição</th>
+		<th scope="col">Duração</th>
+		<th scope="col"></th>
+        <th></th>
+    </tr>
+    <tbody>
+        {{#each this}}
+            <tr scope="row">
+                <td><a href="#playlists/{{_id}}">{{this.name}}</a></td>
+                <td>{{this.description}}</td>
+                <td>{{this.duration}}</td>
+				<td><button id="buttonInsertMusic_{{_id}}">Inserir música numa lista</button></td>
+            </tr>
+        {{/each}}
+    </tbody>
+    </thead>
+</table>
