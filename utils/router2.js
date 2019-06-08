@@ -61,7 +61,7 @@ function Router() {
     }
 }
 
-const PARAM_REGEX = '[%a-zA-Z0-9/ _-]*'
+const PARAM_REGEX = '[()%a-zA-Z0-9/ _-]*'
 
 function addRoute(route, path, func){
     let r = { 
