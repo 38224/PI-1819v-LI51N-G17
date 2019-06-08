@@ -2,15 +2,15 @@
     <thead>
         <tr>    
             <th scope="col">Nome da Música</th>
+			<th scope="col">URL</th>
             <th scope="col">Duração da Música</th>
-            <th scope="col">URL</th>
         </tr>
         <tbody>
             {{#each this.tracks.track}}
                 <tr scope="row">
 					<td>{{name}}</a></td>
-                    <td>{{duration}}</td>
-                    <td><a href="{{url}}">{{url}}</a></td>
+					<td><a href="{{url}}" target="_blank">{{url}}</a></td>
+                    <td>{{duration}} segundos</td>
                 </tr>
             {{/each}}
         </tbody>

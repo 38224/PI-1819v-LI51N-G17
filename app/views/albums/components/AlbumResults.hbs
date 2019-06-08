@@ -2,15 +2,15 @@
     <thead>
         <tr>    
             <th scope="col">Nome</th>
-            <th scope="col">Playcount</th>
             <th scope="col">URL</th>
+            <th scope="col">Vezes Ouvida</th>
         </tr>
         <tbody>
             {{#each this}}
                 <tr scope="row">
-					<td><a href="#albums/{{this.mbid}}/tracks">{{this.name}}</a></td>
-                    <td>{{this.playcount}}</td>
-                    <td>{{this.url}}</td>
+					<td><a href="#albums/{{mbid}}/tracks">{{name}}</a></td>
+					<td><a href="{{url}}" target="_blank">{{url}}</a></td>
+					<td>{{playcount}}</td>
                 </tr>
             {{/each}}
         </tbody>
