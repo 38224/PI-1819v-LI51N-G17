@@ -5,15 +5,16 @@ module.exports = {
     login,
     session,
     logout,
+	getAllPlaylists,
+	getPlaylist,
 	getArtist,
 	getAlbums,
 	getTracks,
-    getAllPlaylists,
-	getPlaylist,
-	addMusicToPlaylist,
-	deleteMusicFromPlaylist,
 	createPlaylist,
-	editPlaylist
+	editPlaylist,
+	addMusicToPlaylist,
+	deleteMusicFromPlaylist
+	
 }
 
 const baseAuthUrl = 'http://localhost:3000/api/auth'
