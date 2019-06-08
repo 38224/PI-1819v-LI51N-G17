@@ -6,11 +6,12 @@
             <th scope="col">Duração da Música</th>
         </tr>
         <tbody>
-            {{#each this.tracks.track}}
+			{{#each this.tracks.track}}
                 <tr scope="row">
 					<td>{{name}}</a></td>
 					<td><a href="{{url}}" target="_blank">{{url}}</a></td>
                     <td>{{duration}} segundos</td>
+					<td><a href="#playlists/{{../mbid}}/{{name}}" name = "addMusic">Add to Playlist</button></td>
                 </tr>
             {{/each}}
         </tbody>
