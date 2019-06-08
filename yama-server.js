@@ -53,7 +53,7 @@ app.use(morgan('dev'))
 app.use(expressSession({ secret: 'keyboard cat', resave: false, saveUninitialized: true}))
 app.use(frontEndMiddleware(isDev))
 yamaWebApi(app, yamaServices)
-authWebApi(app, authService)
+//authWebApi(app, authService)
 
 http
     .createServer(app)
