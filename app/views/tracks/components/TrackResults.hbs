@@ -1,16 +1,16 @@
 <table class="table table-hover">
     <thead>
         <tr>    
-            <th scope="col">Nome</th>
+            <th scope="col">Nome da Música</th>
+            <th scope="col">Duração da Música</th>
             <th scope="col">URL</th>
-            <th scope="col">Listeners</th>
         </tr>
         <tbody>
             {{#each this}}
                 <tr scope="row">
-					<td><a href="#artists/{{this.mbid}}/albums">{{this.name}}</a></td>
-                    <td>{{this.url}}</td>
-                    <td>{{this.listeners}}</td>
+					<td>{{this.tracks.track.name}}</a></td>
+                    <td>{{this.tracks.track.duration}}</td>
+                    <td>{{this.tracks.track.url}}</td>
                 </tr>
             {{/each}}
         </tbody>

@@ -5,7 +5,9 @@ module.exports = {
     login,
     session,
     logout,
-	getAlbumMusics,
+	getArtist,
+	getAlbums,
+	getTracks,
     getAllPlaylists,
 	getPlaylist,
 	addMusicToPlaylist,
@@ -17,6 +19,7 @@ module.exports = {
 const baseAuthUrl = 'http://localhost:3000/api/auth'
 // talvez seja preciso usar para musics?
 const basePlaylistsUrl = 'http://localhost:3000/yama/playlists'
+const baseSearchUrl = 'http://localhost:3000/api'
 
 function signup(fullname, username, password){
     const options = {
@@ -51,10 +54,6 @@ function logout(){
     return fetchJSON(`${baseAuthUrl}/logout`, { method: 'POST' })
 }
 
-function getAlbumMusics(mbid) {
-    return fetchJSON(`${baseLeaguesUrl}/albums/${mbid}/tracks`)
-}
-
 function getAllPlaylists() {
     return fetchJSON(`${basePlaylistsUrl}`)
 }
@@ -62,6 +61,20 @@ function getAllPlaylists() {
 function getPlaylist(id) {
     return fetchJSON(`${basePlaylistsUrl}/${id}`)
 }
+
+function getArtist(name) {
+    return fetchJSON(`${baseSearchUrl}/artists/${name}`)
+}
+
+function getAlbums(mbid) {
+    return fetchJSON(`${baseSearchUrl}/artists/${mbid}/albums`)
+}
+
+function getTracks(mbid) {
+    return fetchJSON(`${baseSearchUrl}/albums/${mbid}/tracks`)
+}
+
+
   
 function createPlaylist(name, description) {
 	
