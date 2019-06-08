@@ -15,6 +15,7 @@ module.exports = (app, yamaServices) => {
 	app.delete("/yama/playlists/:playlistId/musics/:musicName", deleteMusicFromPlaylist)
 	app.delete("/yama/playlists/:playlistId", deletePlaylist)
 	app.use(resourceNotFound)
+	app.use(errorHandler)
 
 	function getArtistsByName(req, resp, next) {
 		let artistName = req.params.artistName
@@ -84,7 +85,7 @@ module.exports = (app, yamaServices) => {
 		let playlistId = req.params.playlistId
 		let albumId = req.params.albumId
 		let musicName = req.params.musicName
-		
+
 		return executor(
 			yamaServices.addMusicToPlaylist(playlistId, albumId, musicName),
 			resp,
@@ -118,7 +119,7 @@ module.exports = (app, yamaServices) => {
 		})
 	}
 
-	function errorHandler(err, resp) {
+	function errorHandler(err, req, resp, next) {
 		resp.status(err.statusCode).send(err)
 	}
 
