@@ -3,10 +3,9 @@
 const util = require('../util')
 const yamaApi = require('../yama-api-requests.js')
 const Handlebars = require('./../../../node_modules/handlebars/dist/handlebars.js')
-const musicsResults = Handlebars.compile(require('./../../views/playlist/components/PlaylistMusicsResults.hbs').default)
+const playlistResult = Handlebars.compile(require('./../../views/playlists/components/playlistResults.hbs').default)
+const playlistView = require('./../../views/playlists/playlist.html')
 
-const playlistView = require('./../../views/playlist/playlist.html')
-//const editPlaylist = Handlebars.compile(require('./../../views/playlist/components/editPlaylist.hbs'))
 
 module.exports = async (divMain, playlistId) => {
         try {
@@ -18,19 +17,30 @@ module.exports = async (divMain, playlistId) => {
                 else {
 			*/
 			divMain.innerHTML = playlistView
+			const divPlaylistResults = document.getElementById('divPlaylistResults')
 			const playlist = await yamaApi.getPlaylist(playlistId) 
-			if(playlist.musics.length != 0){
-				
-				document
-						.getElementById('divMusicsResults')
-						.innerHTML = musicsResults(playlist.musics)
-				playlist.musics.forEach(function(element) {
-				
-				document.querySelector("#removeMusic_"+element.name).addEventListener("click", function() {
-						yamaApi.deleteMusicFromPlaylist(playlistId,element.name)
+			divPlaylistResults.innerHTML = playlistResult(playlist)
+			// input fields-----------------------------------------
+			const playlistNameInput = document.getElementById('playlistName')
+			const playlistDescriptionInput = document.getElementById('playlistDescription')
+			
+			document.getElementById('buttonEditPlaylist')
+					.addEventListener('click', async ev => {
+						ev.preventDefault() 
+						if(!playlistNameInput.value || !playlistDescriptionInput.value)
+							return util.showAlert('preencha todos os parametro', 'createPlaylistAlert', 'warning')
+						const playlists = await yamaApi.editPlaylist(playlistId,playlistNameInput.value,playlistDescriptionInput.value)
+						alert("lista alterada")
+						window.location.href = "http://localhost:3000/#playlists"
 					})
+					
+			playlist.musics.forEach(function(element) {
+				document.querySelector("#buttonDeleteMusic_"+element.duration).addEventListener("click", function() {
+					yamaApi.deleteMusicFromPlaylist(playlistId,element.name)
+					alert('music deleted')
+					window.location.reload()
 				})
-			}
+			})
                 
         } catch(err) {
                 util.showAlert(JSON.stringify(err))

@@ -19,54 +19,29 @@ module.exports = async (divMain) => {
 				
 				divMain.innerHTML = playlistsView
 				const divPlaylistsResults = document.getElementById('divPlaylistsResults')
+				const playlist = await yamaApi.getAllPlaylists()
+				divPlaylistsResults.innerHTML = playlistsResults(playlist)
 				// input fields-----------------------------------------
 				const playlistNameInput = document.getElementById('playlistName')
 				const playlistDescriptionInput = document.getElementById('playlistDescription')
-				const playlistIdInput = document.getElementById('playlistId')
-				const albumIdInput = document.getElementById('albumId')
-				const musicNameInput = document.getElementById('musicName')
 				// add listeners ---------------------------------------
-				document.getElementById('buttonSearch')
-					.addEventListener('click', async ev => {
-						ev.preventDefault()
-						const playlists = await yamaApi.getAllPlaylists()
-						if(playlists.length != 0){
-							
-							divPlaylistsResults.innerHTML = playlistsResults(playlists)
-						}
-					}) 
+				
 				document.getElementById('buttonCreatePlaylist')
 					.addEventListener('click', async ev => {
 						ev.preventDefault() 
-						if(!playlistNameInput.value || !playlistDescription.value)
+						if(!playlistNameInput.value || !playlistDescriptionInput.value)
 							return util.showAlert('preencha todos os parametro', 'createPlaylistAlert', 'warning')
-						const playlists = await yamaApi.createPlaylist(playlistNameInput.value,playlistDescription.value)
-						alert("lista creada")
+						const playlists = await yamaApi.createPlaylist(playlistNameInput.value,playlistDescriptionInput.value)
+						alert("lista criada")
+						window.location.reload(true)
 					})
-				document.getElementById('buttonEditPlaylist')
-					.addEventListener('click', async ev => {
-						ev.preventDefault() 
-						if(!playlistIdInput.value || !playlistNameInput.value || !playlistDescription.value)
-							return util.showAlert('preencha todos os parametro', 'createPlaylistAlert', 'warning')
-						const playlists = await yamaApi.editPlaylist(playlistIdInput.value,playlistNameInput.value,playlistDescription.value)
-						alert("lista alterada")
-					})
-				document.getElementById('buttonInsertMusic')
-					.addEventListener('click', async ev => {
-						ev.preventDefault() 
-						if(!playlistIdInput.value || !albumIdInput.value || !musicNameInput.value)
-							return util.showAlert('preencha todos os parametro', 'createPlaylistAlert', 'warning')
-						const playlists = await yamaApi.addMusicToPlaylist(playlistIdInput.value,albumIdInput.value,musicNameInput.value)
-						alert("musica inserida")
-					})
-				document.getElementById('buttonRemoveMusic')
-					.addEventListener('click', async ev => {
-						ev.preventDefault() 
-						if(!playlistIdInput.value || !musicNameInput.value)
-							return util.showAlert('preencha todos os parametro', 'createPlaylistAlert', 'warning')
-						const playlists = await yamaApi.deleteMusicFromPlaylist(playlistIdInput.value,musicNameInput.value)
-						alert("música removida")
-					})
+				playlist.forEach(function(element) {
+				document.querySelector("#buttonDeletePlaylist_"+element._id).addEventListener("click", function() {
+					yamaApi.deletePlaylist(element._id)
+					alert('playlist deleted')
+					window.location.reload(true)
+				})
+			})
 				 
         } catch(err) {
                 util.showAlert(JSON.stringify(err))

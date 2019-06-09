@@ -13,8 +13,8 @@ module.exports = {
 	createPlaylist,
 	editPlaylist,
 	addMusicToPlaylist,
-	deleteMusicFromPlaylist
-	
+	deleteMusicFromPlaylist,
+	deletePlaylist
 }
 
 const baseAuthUrl = 'http://localhost:3000/api/auth'
@@ -116,6 +116,14 @@ function deleteMusicFromPlaylist(playlistId,musicName) {
         headers: { 'Content-Type': 'application/json' }
     }
     return fetchJSON(`${basePlaylistsUrl}/${playlistId}/musics/${musicName}`, options)
+}
+
+function deletePlaylist(playlistId) {
+    const options = {
+        method: 'DELETE',
+        headers: { 'Content-Type': 'application/json' }
+    }
+    return fetchJSON(`${basePlaylistsUrl}/${playlistId}`, options)
 }
  
 async function fetchJSON(url, options = { method: 'GET', credentials: 'same-origin' }) {

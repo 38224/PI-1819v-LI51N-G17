@@ -2,18 +2,19 @@
     <thead>
     <tr>             
         <th scope="col">Nome</th>
-        <th scope="col">Descrição</th>
+        <th scope="col">URL</th>
 		<th scope="col">Duração</th>
 		<th scope="col"></th>
         <th></th>
     </tr>
+	
     <tbody>
-        {{#each this}}
+        {{#each this.musics}}
             <tr scope="row">
-                <td><a href="#playlists/{{_id}}">{{this.name}}</a></td>
-                <td>{{this.description}}</td>
+                <td>{{this.name}}</td>
+                <td>{{this.url}}</td>
                 <td>{{this.duration}}</td>
-				<td><button id="buttonDeletePlaylist_{{this._id}}">Apagar Playlist</button></td>
+				<td><button id="buttonDeleteMusic_{{this.duration}}">Retirar música da lista</button></td>
             </tr>
         {{/each}}
     </tbody>
