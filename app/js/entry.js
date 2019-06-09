@@ -53,7 +53,7 @@ async function showNavbar() {
 
     document
         .getElementById('divNavbar')
-        .innerHTML = navbarView()//await yamaApi.session())
+        .innerHTML = navbarView(await yamaApi.session())
 }
 
 function showView() {
