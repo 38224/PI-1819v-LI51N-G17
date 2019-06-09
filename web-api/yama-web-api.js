@@ -16,13 +16,11 @@ module.exports = (app, yamaServices) => {
 	app.delete("/yama/playlists/:playlistId/musics/:musicName", deleteMusicFromPlaylist)
 	app.delete("/yama/playlists/:playlistId", deletePlaylist)
 	app.use(resourceNotFound)
-	app.use(errorHandler)
 
 	function checkAuthentication(req, resp, next) {
         if(req.isAuthenticated())
 			next()
         else{
-			//util.showAlert('Não tem acesso a estes recursos')
 			next({
 				'statusCode': 401,
 				'err': 'Cannot access foca by unauthenticated users!'
@@ -133,13 +131,9 @@ module.exports = (app, yamaServices) => {
 		})
 	}
 
-	function errorHandler(err, req, resp, next) {
-		resp.status(err.statusCode).send(err)
-	}
-
 	function executor(promise, resp, next) {
 		return promise
-			.catch(err => errorHandler(err, resp))
+			.catch(err => resp.status(err.statusCode).send(err))	
 			.then(p => resp.json(p))
 			.then(next)
 	}

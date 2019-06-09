@@ -54,8 +54,6 @@ class UserDb {
                 if(data.hits.hits.length == 0)
                     throw { 'statusCode': 404, 'message': 'Utilizador não existe' }
 				const first = data.hits.hits[0]
-				if(first._source.password != password) 
-					throw {'statusCode': 401, 'err': 'Credenciais erradas!' }
                 const res = first._source
                 res._id = first._id
                 return res
