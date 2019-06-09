@@ -9,13 +9,6 @@ const playlistView = require('./../../views/playlists/playlist.html')
 
 module.exports = async (divMain, playlistId) => {
         try {
-			/*
-                const session = await yamaApi.session()
-                if(!session.auth) {
-                        window.location.hash = '#login'
-                }
-                else {
-			*/
 			divMain.innerHTML = playlistView
 			const divPlaylistResults = document.getElementById('divPlaylistResults')
 			const playlist = await yamaApi.getPlaylist(playlistId) 
@@ -28,7 +21,7 @@ module.exports = async (divMain, playlistId) => {
 					.addEventListener('click', async ev => {
 						ev.preventDefault() 
 						if(!playlistNameInput.value || !playlistDescriptionInput.value)
-							return util.showAlert('preencha todos os parametro', 'createPlaylistAlert', 'warning')
+							return util.showAlert('preencha todos os parametro')
 						const playlists = await yamaApi.editPlaylist(playlistId,playlistNameInput.value,playlistDescriptionInput.value)
 						alert("lista alterada")
 						window.location.href = "http://localhost:3000/#playlists"

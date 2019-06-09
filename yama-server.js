@@ -52,9 +52,8 @@ app.use(bodyParser.json())
 app.use(morgan('dev'))
 app.use(expressSession({ secret: 'keyboard cat', resave: false, saveUninitialized: true }))
 app.use(frontEndMiddleware(isDev))
-
 authWebApi(app, authService)
-yamaWebApi(app, yamaServices)
+yamaWebApi(app, yamaServices) 
 
 http
     .createServer(app)
@@ -71,3 +70,4 @@ function frontEndMiddleware(isDev) {
 //const yamaDb = require('./data/yama-db-mock').init(es)
 //const yamaServices = require('./services/yama-services-mock').init(lastfmData,yamaDb)
 //mocks end//
+ 

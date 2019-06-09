@@ -7,15 +7,13 @@ const insertMusicView = require('./../../views/playlists/insertMusic.html')
 const insertMusicResults =  Handlebars.compile(require('./../../views/playlists/components/insertMusicResults.hbs').default)
 
 module.exports = async (divMain,mbid,musicName) => {
-        try {
-                /*
-				const session = await yamaApi.session()
-                if(!session.auth) {
-                        window.location.hash = '#login'
-                }
-                else {
-					
-				*/
+        try { 
+			const session = await yamaApi.session()
+			if(!session.auth) { 
+					window.location.hash = '#login'
+					alert("Para introduzir uma música numa lista, precisa fazer login","aviso")
+			}
+			else { 
 				divMain.innerHTML = insertMusicView
 				const divinsertMusicResults = document.getElementById('divinsertMusicResults')
 				const playlist = await yamaApi.getAllPlaylists()
@@ -29,6 +27,7 @@ module.exports = async (divMain,mbid,musicName) => {
 						window.location.href = "http://localhost:3000/#playlists/"+element._id
 					})
 				})
+			}
         } catch(err) {
                 util.showAlert(JSON.stringify(err))
         }

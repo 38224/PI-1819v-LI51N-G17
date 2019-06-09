@@ -1,16 +1,14 @@
 'use strict'
 
 const Handlebars = require('./../../node_modules/handlebars/dist/handlebars.js')
-const alertHB = require('./../views/alert.hbs').default
-
+const alertView = Handlebars.compile(require('./../views/alert.hbs').default)
 
 module.exports = {
     showAlert
 }
 
-function showAlert(message, div = "divAlerts", type = 'danger') {
-	const alertView = Handlebars.compile(alertHB)
+function showAlert(message, type = 'danger') {
     document
-        .getElementById(div)
+        .getElementById('divAlerts')
         .insertAdjacentHTML('beforeend', alertView({type, message}))
 }

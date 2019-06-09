@@ -7,16 +7,7 @@ const artistsView = require('./../../views/artists/artist.html')
 const artistsResults =  Handlebars.compile(require('./../../views/artists/components/ArtistsResults.hbs').default)
 //divArtistsResults
 module.exports = async (divMain) => {
-        try {
-                /*
-				const session = await yamaApi.session()
-                if(!session.auth) {
-                        window.location.hash = '#login'
-                }
-                else {
-					
-				*/
-				
+        try { 
 				divMain.innerHTML = artistsView
 				const divArtistsResults = document.getElementById('divArtistsResults')
 				// input fields-----------------------------------------

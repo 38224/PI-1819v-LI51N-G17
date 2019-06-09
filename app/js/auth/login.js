@@ -7,7 +7,7 @@ const loginView = require('./../../views/auth/login.html')
 module.exports = async (divMain, getAuthAndInsertNavbar) => {
     try {
         const session = await yamaApi.session()
-        if(session && session.auth) {
+        if(session.auth) {
             window.location.hash = '#home'
         }
         else {

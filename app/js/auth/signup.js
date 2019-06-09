@@ -27,7 +27,7 @@ module.exports = async (divMain, getAuthAndInsertNavbar) => {
                         .signup(inputFullname.value, inputUsername.value, inputPassword.value)
                         .then(async () => await getAuthAndInsertNavbar())
                         .then(() => window.location.hash = '#playlists')
-                        .catch(err => util.showAlert(err.message))
+                        .catch(err => util.showAlert("Já existe esse utilizador"))
                 })
 				
         }

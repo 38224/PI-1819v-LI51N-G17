@@ -8,15 +8,6 @@ const playlistsResults =  Handlebars.compile(require('./../../views/playlists/co
 
 module.exports = async (divMain) => {
         try {
-                /*
-				const session = await yamaApi.session()
-                if(!session.auth) {
-                        window.location.hash = '#login'
-                }
-                else {
-					
-				*/
-				
 				divMain.innerHTML = playlistsView
 				const divPlaylistsResults = document.getElementById('divPlaylistsResults')
 				const playlist = await yamaApi.getAllPlaylists()
@@ -30,7 +21,7 @@ module.exports = async (divMain) => {
 					.addEventListener('click', async ev => {
 						ev.preventDefault() 
 						if(!playlistNameInput.value || !playlistDescriptionInput.value)
-							return util.showAlert('preencha todos os parametro', 'createPlaylistAlert', 'warning')
+							return util.showAlert('preencha todos os parametro')
 						const playlists = await yamaApi.createPlaylist(playlistNameInput.value,playlistDescriptionInput.value)
 						alert("lista criada")
 						window.location.reload(true)
