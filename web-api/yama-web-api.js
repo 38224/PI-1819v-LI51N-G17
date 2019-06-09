@@ -7,6 +7,7 @@ module.exports = (app, yamaServices) => {
 	app.get('/api/artists/:artistName', getArtistsByName)
 	app.get('/api/artists/:artistId/albums', getAlbumsByMbid)
 	app.get('/api/albums/:albumId/tracks', getTracksByMbid)
+	app.use(checkAuthentication)
 	app.post("/yama/playlists", createPlaylist)
 	app.get("/yama/playlists", getPlaylists)
 	app.get("/yama/playlists/:playlistId", getPlaylistInfo)
@@ -16,6 +17,19 @@ module.exports = (app, yamaServices) => {
 	app.delete("/yama/playlists/:playlistId", deletePlaylist)
 	app.use(resourceNotFound)
 	app.use(errorHandler)
+
+	function checkAuthentication(req, resp, next) {
+        if(req.isAuthenticated())
+			next()
+        else{
+			//util.showAlert('Não tem acesso a estes recursos')
+			next({
+				'statusCode': 401,
+				'err': 'Cannot access foca by unauthenticated users!'
+			})
+		} 
+    }
+
 
 	function getArtistsByName(req, resp, next) {
 		let artistName = req.params.artistName

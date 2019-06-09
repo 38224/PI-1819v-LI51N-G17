@@ -1,7 +1,7 @@
 'use strict'
 
 const Handlebars = require('./../../node_modules/handlebars/dist/handlebars.js')
-const alertHB = require('./../views/alert.hbs')
+const alertHB = require('./../views/alert.hbs').default
 
 
 module.exports = {
