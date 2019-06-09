@@ -29,7 +29,6 @@ module.exports = async (divMain, getAuthAndInsertNavbar) => {
                 })
 		}
     } catch(err) {
-		alert(err)
         util.showAlert(JSON.stringify(err))
     }
 }

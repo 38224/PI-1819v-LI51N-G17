@@ -11,7 +11,6 @@ class Auth {
     }
 
     createUser(fullname, username, password) { 
-	console.log("enter creatuser in authservice")
         return this.userDb
             .getUserByUsername(username)
             .catch(err => { throw err })
@@ -24,12 +23,10 @@ class Auth {
     }
 
     getUser(userId) {
-		console.log("enter get in authservice")
         return this.userDb.getUserById(userId)
     }
     
     authenticate(username, password) {
-		console.log("enter authenticate in authservice")
         return this.userDb
             .getUserByUsername(username)
             .then(async (user) => {

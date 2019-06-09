@@ -29,7 +29,7 @@ module.exports = async (divMain) => {
 				playlist.forEach(function(element) {
 				document.querySelector("#buttonDeletePlaylist_"+element._id).addEventListener("click", function() {
 					yamaApi.deletePlaylist(element._id)
-					alert('playlist deleted')
+					alert('lista removida')
 					window.location.reload(true)
 				})
 			})

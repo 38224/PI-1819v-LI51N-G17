@@ -23,7 +23,7 @@ module.exports = async (divMain,mbid,musicName) => {
 				playlist.forEach(function(element) {
 					document.querySelector("#buttonInsertMusic_"+element._id).addEventListener("click", function() {
 						yamaApi.addMusicToPlaylist(element._id,mbid,musicName)
-						alert('music inserted')
+						alert('música adicionada')
 						window.location.href = "http://localhost:3000/#playlists/"+element._id
 					})
 				})
