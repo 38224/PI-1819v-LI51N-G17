@@ -29,9 +29,10 @@ class YamaDb {
 			})
 			.then(body => ({ 'status': 'created', '_id': body._id }))
 	}
-	getPlaylists() {
+	getPlaylists(userID) {
+		const query = `user_id:${userID}`
 		return rp.get({
-			uri: `${this.uri}/playlist/_search`,
+			uri: `${this.uri}/playlist/_search?q=${query}`,
 			headers: { 'content-type': 'application/json' },
 			json: true
 		})
@@ -42,8 +43,8 @@ class YamaDb {
 					return Promise.reject({ 'statusCode': 404, 'message': 'not found' })
 				return Promise.reject({ 'statusCode': error.statusCode, 'message': 'unknown error' })
 			})
-			.then(body => body.hits.hits.map(p => parsePlaylists(p)))
-
+			.then(body => {
+				return body.hits.hits.map(p => parsePlaylists(p))})
 	}
 	getPlaylistInfo(mbid) {
 		return rp.get({
@@ -58,7 +59,10 @@ class YamaDb {
 					return Promise.reject({ 'statusCode': 404, 'message': 'not found' })
 				return Promise.reject({ 'statusCode': error.statusCode, 'message': 'unknown error' })
 			})
-			.then(body => parsePlaylists(body))
+			.then(body =>{
+				var a = body
+				return  parsePlaylists(body)
+			})
 		//http://localhost:9200/yama/playlist/ocKQPWoBFqJyB8idQUxg
 	}
 	editPlaylist(playlistId, pl) {  // edita grupo com {_id:xxx,name:nome,description:desc,musics:[]}
@@ -98,6 +102,7 @@ class YamaDb {
 function parsePlaylists(playlist) {
 	let res = {
 		'_id': playlist._id,
+		'user_id': playlist._source.user_id,
 		'name': playlist._source.name,
 		'description': playlist._source.description,
 		'duration': playlist._source.duration,

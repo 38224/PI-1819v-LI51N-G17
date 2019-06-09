@@ -61,7 +61,7 @@ module.exports = (app, yamaServices) => {
 	function createPlaylist(req, resp, next) {
 		resp.status(201)
 		return executor(
-			yamaServices.createPlaylist(req.body),
+			yamaServices.createPlaylist(req.user._id,req.body),
 			resp,
 			next
 		)
@@ -69,7 +69,7 @@ module.exports = (app, yamaServices) => {
 	}
 	function getPlaylists(req, resp, next) {
 		return executor(
-			yamaServices.getPlaylists(),
+			yamaServices.getPlaylists(req.user._id),
 			resp,
 			next
 		)

@@ -23,12 +23,13 @@ class Services {
 		return this.lastfmData.getTracksByMbid(mbid)
 	}
 
-	createPlaylist(body) {
+	createPlaylist(userID,body) {
+		body.user_id = userID
 		return this.yamaDb.createPlaylist(body)
 	}
 
-	getPlaylists() {
-		return this.yamaDb.getPlaylists()
+	getPlaylists(userID) {
+		return this.yamaDb.getPlaylists(userID)
 	}
 
 	getPlaylistInfo(id) {

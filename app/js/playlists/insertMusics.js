@@ -11,7 +11,7 @@ module.exports = async (divMain,mbid,musicName) => {
 			const session = await yamaApi.session()
 			if(!session.auth) { 
 					window.location.hash = '#login'
-					alert("Para introduzir uma música numa lista, precisa fazer login","aviso")
+					alert("Para introduzir uma música numa lista, precisa fazer login")
 			}
 			else { 
 				divMain.innerHTML = insertMusicView
