@@ -155,70 +155,6 @@
 						}
 					},
 					"response": []
-				},
-				{
-					"name": "LOGIN",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n            \"username\": \"gabri\",\n            \"password\": \"123\"\n}"
-						},
-						"url": {
-							"raw": "http://localhost:9200/yama/auth/login",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "9200",
-							"path": [
-								"yama",
-								"auth",
-								"login"
-							]
-						}
-					},
-					"response": []
-				},
-				{
-					"name": "LOGOUT",
-					"request": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\r\n    \"fullname\": \"gabri\",\r\n\t\"username\": \"gabri\",\r\n    \"password\": \"123\"\r\n}"
-						},
-						"url": {
-							"raw": "http://localhost:3000/api/auth/signup",
-							"protocol": "http",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"api",
-								"auth",
-								"signup"
-							]
-						}
-					},
-					"response": []
 				}
 			]
 		},
@@ -698,6 +634,66 @@
 						"yama",
 						"playlists",
 						"{{playlist_id}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LOGOUT",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"url": {
+					"raw": "http://localhost:3000/api/auth/logout",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"api",
+						"auth",
+						"logout"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "LOGIN",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n            \"username\": \"gabri\",\n            \"password\": \"123\"\n}"
+				},
+				"url": {
+					"raw": "http://localhost:9200/yama/auth/login",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "9200",
+					"path": [
+						"yama",
+						"auth",
+						"login"
 					]
 				}
 			},

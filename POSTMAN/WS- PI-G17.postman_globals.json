@@ -18,7 +18,7 @@
 		},
 		{
 			"key": "playlist_id",
-			"value": "tNw8XmoBueIEm3l8VV25",
+			"value": "bv280WoBZiHRdZH_B_BK",
 			"enabled": true
 		},
 		{
@@ -29,6 +29,6 @@
 	],
 	"name": "WS- PI-G17 Globals",
 	"_postman_variable_scope": "globals",
-	"_postman_exported_at": "2019-04-27T10:10:29.908Z",
-	"_postman_exported_using": "Postman/7.0.9"
+	"_postman_exported_at": "2019-06-13T18:00:12.722Z",
+	"_postman_exported_using": "Postman/7.2.0"
 }
