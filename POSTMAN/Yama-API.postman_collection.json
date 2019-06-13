@@ -27,10 +27,6 @@
 					"request": {
 						"method": "DELETE",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "localhost:9200/yama",
 							"host": [
@@ -39,6 +35,39 @@
 							"port": "9200",
 							"path": [
 								"yama"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "RESET INDEX user",
+					"event": [
+						{
+							"listen": "test",
+							"script": {
+								"id": "14e24b55-fceb-4ec5-ab07-f82195b8afa5",
+								"exec": [
+									"pm.test(\"Status code is 200\", function () {",
+									"    pm.response.to.have.status(200);",
+									"});"
+								],
+								"type": "text/javascript"
+							}
+						}
+					],
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9200/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"users"
 							]
 						}
 					},
@@ -63,10 +92,6 @@
 					"request": {
 						"method": "PUT",
 						"header": [],
-						"body": {
-							"mode": "raw",
-							"raw": ""
-						},
 						"url": {
 							"raw": "localhost:9200/yama",
 							"host": [
@@ -75,6 +100,121 @@
 							"port": "9200",
 							"path": [
 								"yama"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "CREATE INDEX USERS",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:9200/users",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"users"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "SESSION",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fullname\": \"gabri\",\r\n\t\"username\": \"gabri\",\r\n    \"password\": \"123\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"signup"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LOGIN",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n            \"username\": \"gabri\",\n            \"password\": \"123\"\n}"
+						},
+						"url": {
+							"raw": "http://localhost:9200/yama/auth/login",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "9200",
+							"path": [
+								"yama",
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "LOGOUT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"fullname\": \"gabri\",\r\n\t\"username\": \"gabri\",\r\n    \"password\": \"123\"\r\n}"
+						},
+						"url": {
+							"raw": "http://localhost:3000/api/auth/signup",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"api",
+								"auth",
+								"signup"
 							]
 						}
 					},
@@ -148,10 +288,6 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
 					"raw": "localhost:3000/api/artists/{{artist_mbid}}/albums",
 					"host": [
@@ -187,10 +323,6 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
 					"raw": "localhost:3000/api/albums/{{album_mbid}}/tracks",
 					"host": [
@@ -279,10 +411,6 @@
 			"request": {
 				"method": "GET",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
 					"raw": "localhost:3000/yama/playlists/{{playlist_id}}",
 					"host": [
@@ -344,43 +472,6 @@
 			"response": []
 		},
 		{
-			"name": "getPlaylists",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"id": "a3cff322-76f5-4767-81d4-03af1d2d3dfe",
-						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});"
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {},
-				"url": {
-					"raw": "localhost:3000/yama/playlists",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"yama",
-						"playlists"
-					]
-				}
-			},
-			"response": []
-		},
-		{
 			"name": "addMusicToPlaylist",
 			"event": [
 				{
@@ -403,7 +494,8 @@
 						"key": "Content-Type",
 						"name": "Content-Type",
 						"value": "application/json",
-						"type": "text"
+						"type": "text",
+						"disabled": true
 					}
 				],
 				"body": {
@@ -424,6 +516,46 @@
 						"{{album_mbid}}",
 						"musics",
 						"{{music_name}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "getPlaylists",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "a3cff322-76f5-4767-81d4-03af1d2d3dfe",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": []
+				},
+				"url": {
+					"raw": "localhost:3000/yama/playlists",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"yama",
+						"playlists"
 					]
 				}
 			},
@@ -452,7 +584,8 @@
 						"key": "Content-Type",
 						"name": "Content-Type",
 						"type": "text",
-						"value": "application/json"
+						"value": "application/json",
+						"disabled": true
 					}
 				],
 				"body": {
@@ -497,10 +630,6 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
 					"raw": "localhost:3000/yama/playlists/{{playlist_id}}/musics/{{music_name}}",
 					"host": [
@@ -537,10 +666,6 @@
 			"request": {
 				"method": "DELETE",
 				"header": [],
-				"body": {
-					"mode": "raw",
-					"raw": ""
-				},
 				"url": {
 					"raw": "localhost:3000/yama/playlists/{{playlist_id}}/musics/{{music_name}}",
 					"host": [
@@ -553,6 +678,26 @@
 						"{{playlist_id}}",
 						"musics",
 						"{{music_name}}"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "deletePlaylist",
+			"request": {
+				"method": "DELETE",
+				"header": [],
+				"url": {
+					"raw": "localhost:3000/yama/playlists/{{playlist_id}}",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"yama",
+						"playlists",
+						"{{playlist_id}}"
 					]
 				}
 			},
